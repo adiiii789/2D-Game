@@ -20,7 +20,7 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		
-		tile = new Tile[16];
+		tile = new Tile[10];
 		mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow]; //Array wird erstellt
 		
 		getTileImage();
@@ -33,13 +33,30 @@ public class TileManager {
 		try {
 			
 			tile[0] = new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/ground1.png")); //g
+			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/ground1.png"));
 			
+			//Wall Green
 			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall_main.png")); 
+			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall_main_green.png")); 
 			
 			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water_main.png")); 
+			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall_top_green.png")); 
+			
+			tile[3] = new Tile();
+			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall_top_left_green.png")); 
+			
+			tile[4] = new Tile();
+			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall_bot_left_green.png")); 
+			
+			tile[5] = new Tile();
+			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall_top_right_green.png")); 
+			
+			tile[6] = new Tile();
+			tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall_bot_right_green.png")); 
+			
+			
+			
+			
 			
 			
 		} catch (IOException e) {

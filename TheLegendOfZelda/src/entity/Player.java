@@ -16,6 +16,7 @@ public class Player extends Entity {
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
 		
+		
 		this.gp = gp;
 		this.keyH = keyH;
 		
@@ -25,8 +26,8 @@ public class Player extends Entity {
 	
 	public void setDefaultValues () {
 		
-		x=100;
-		y=100;
+		worldX=100;
+		worldY=100;
 		
 		direction = "down";
 	}
@@ -54,19 +55,19 @@ public class Player extends Entity {
 					|| keyH.leftPressed == true || keyH.rightPressed == true) { //Sprite wechselt nicht, wenn nichts gedrückt wird
 				if(keyH.upPressed == true) { //aus dem KeyHandler input abfragen | true = buttonPressed , false = !buttonPressed
 					direction = "up"; //hilfe damit wir einfacher auf die Richtung von dem Player zugreifen können
-					y -= speed; // kurzschreibweise von playerY = playerY - playerSpeed;
+					worldY -= speed; // kurzschreibweise von playerY = playerY - playerSpeed;
 				}
 				else if(keyH.downPressed == true) {
 					direction = "down";
-						y += speed;
+					worldY += speed;
 				}
 				else if(keyH.leftPressed == true) {
 					direction = "left";
-					x -= speed;
+					worldX -= speed;
 				}
 				else if(keyH.rightPressed == true) {
 					direction = "right";
-					x += speed;
+					worldX += speed;
 				}
 				
 				spriteCounter++; 	//der Switch, welcher die Sprite Animation Steuert
@@ -126,7 +127,7 @@ public class Player extends Entity {
 				
 				break;
 		}
-		g2.drawImage (image, x, y, gp.tileSize, gp.tileSize, null); //Zeichnet den Player
+		g2.drawImage (image, worldX, worldY, gp.tileSize, gp.tileSize, null); //Zeichnet den Player
 	
 	
 }
