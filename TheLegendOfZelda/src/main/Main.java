@@ -24,5 +24,5 @@ public class Main {
 	}
 }
 
-//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
+
 //GIT Schlüssel
