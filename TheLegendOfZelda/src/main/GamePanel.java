@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
 	//this heißt btw diese klasse, also GamePanel
@@ -17,14 +18,16 @@ public class GamePanel extends JPanel implements Runnable{
 	final int scale = 3; 			 //hochskalierung der Sprite
 	
 	public final int tileSize = originalTileSize * scale; 
-	final int maxScreenCol = 16;
-	final int maxScreenRow = 12;
-	final int screenWidth = tileSize * maxScreenCol; //anzahl an Tiles in der Horizontalen | 768 pixels
-	final int screenHeight = tileSize * maxScreenRow;//anzahl an Tiles in der Vertikalen   | 576 pixels
+	public final int maxScreenCol = 16;
+	public final int maxScreenRow = 12;
+	public final int screenWidth = tileSize * maxScreenCol; //anzahl an Tiles in der Horizontalen | 768 pixels
+	public final int screenHeight = tileSize * maxScreenRow;//anzahl an Tiles in der Vertikalen   | 576 pixels
 	public final int defaultPlayerSpeed = 4;
 	
 	//FPS
 	public int FPS = 60;
+	
+	TileManager tileM = new TileManager(this);
 	
 	KeyHandler keyH = new KeyHandler();				//KeyHandler wird implementiert
 	Thread gameThread; 								//eine Thread wird einmal gestartet und läuft danach kontinuierlich weiter
@@ -50,11 +53,10 @@ public class GamePanel extends JPanel implements Runnable{
 	public void startGameThread() {
 		
 		gameThread = new Thread(this); 
-		gameThread.start(); //wird 
-	}
-
-	
-	@Override
+		gameThread.start(); 
+	}	//			|___________________
+		//								|								
+	@Override	//						V
 	public void run() { //sobald die  gameThread.start() aufgerufen wird, wird diese Methode getriggered
 		
 		//hier wird die Zeit definiert, also, wie der Char sich im Bild bewegt. das heißt die Logic muss sich aktualisieren und die Bilder müssen gezeichnet werden
@@ -111,6 +113,8 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D)g; //ermöglicht besseren zugriff auf verschiedene wichtige tools für 2D graphiken.
+		
+		tileM.draw(g2); //wichtig das zuerst die Tiles, dann der Player Gezeichnet wird. (Render-Priorität)
 		
 		player.draw(g2);
 		
