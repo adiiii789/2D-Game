@@ -34,14 +34,14 @@ public class Player extends Entity {
 	public void getPlayerImage () {
 		try {
 			
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/link_up_1.png")); //speichert die Bilder in Variablen aus Player
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/link_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/link_front_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/link_front_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/link_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/link_left_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/link_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/link_right_2.png"));
+			up1 = ImageIO.read(getClass().getResourceAsStream("/klee/back1.png")); //speichert die Bilder in Variablen aus Player
+			up2 = ImageIO.read(getClass().getResourceAsStream("/klee/back2.png"));
+			down1 = ImageIO.read(getClass().getResourceAsStream("/klee/front1.png"));
+			down2 = ImageIO.read(getClass().getResourceAsStream("/klee/front2.png"));
+			left1 = ImageIO.read(getClass().getResourceAsStream("/klee/left1.png"));
+			left2 = ImageIO.read(getClass().getResourceAsStream("/klee/left2.png"));
+			right1 = ImageIO.read(getClass().getResourceAsStream("/klee/right1.png"));
+			right2 = ImageIO.read(getClass().getResourceAsStream("/klee/right2.png"));
 			
 			
 		} catch (IOException e) {
