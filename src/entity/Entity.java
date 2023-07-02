@@ -28,11 +28,14 @@ public class Entity {
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
+	public boolean invincible = false;
+	public int invincibleCounter = 0;
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
 	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
+	public int type; //0 = Player, 1 = npc, !2 = monster!
 	
 	public int maxLife;
 	public int life;
@@ -72,7 +75,16 @@ public class Entity {
 		collisionOn = false;
 		gp.cDetection.checkTile(this);
 		gp.cDetection.checkObject(this, false);
-		gp.cDetection.checkPlayer(this);
+		gp.cDetection.checkEntity(this, gp.npc);
+		gp.cDetection.checkEntity(this, gp.monster);
+		boolean contactplayer = gp.cDetection.checkPlayer(this);
+		
+		if (this.type == 2 && contactplayer == true) {
+			if(gp.player.invincible == false) {
+				gp.player.life -= 1;
+				gp.player.invincible = true;
+			}
+		}
 		
 		if(collisionOn == false) { 
 			

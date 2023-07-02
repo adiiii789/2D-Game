@@ -1,16 +1,14 @@
 package entity;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.beans.EventHandler;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.awt.AlphaComposite;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
 
 public class Player extends Entity {
 
@@ -69,7 +67,7 @@ public class Player extends Entity {
 
 	public void update () { //60 mal die Sekunde Aufgerufen
 			if (keyH.upPressed == true || keyH.downPressed == true 
-					|| keyH.leftPressed == true || keyH.rightPressed == true) { //Sprite wechselt nicht, wenn nichts gedrückt wird
+					|| keyH.leftPressed == true || keyH.rightPressed == true || keyH.enterPressed == true) { //Sprite wechselt nicht, wenn nichts gedrückt wird
 				if(keyH.upPressed == true) { //aus dem KeyHandler input abfragen | true = buttonPressed , false = !buttonPressed
 					direction = "up"; //hilfe damit wir einfacher auf die Richtung von dem Player zugreifen können
 					
@@ -98,12 +96,14 @@ public class Player extends Entity {
 				int npcIndex = gp.cDetection.checkEntity(this, gp.npc);
 				interactNPC(npcIndex);
 				
-				gp.eHandler.checkEvent();
+				int monsterIndex = gp.cDetection.checkEntity(this, gp.monster);
+				contactMonster(monsterIndex);
 				
-				gp.keyH.enterPressed = false;
+				gp.eHandler.checkEvent();
+		
 				
 				// wenn die Collision auf False steht, kann der Spieler sich bewegen
-				if(collisionOn == false) { 
+				if(collisionOn == false && keyH.enterPressed == false) { 
 					
 					switch(direction) {
 					case "up":
@@ -121,7 +121,8 @@ public class Player extends Entity {
 						
 					}
 				}
-					
+				
+				gp.keyH.enterPressed = false;
 				
 				spriteCounter++; 	//der Switch, welcher die Sprite Animation Steuert
 				if (spriteCounter >12) {
@@ -134,7 +135,13 @@ public class Player extends Entity {
 					spriteCounter = 0;
 				}}
 				
-			
+			if (invincible == true) {
+				invincibleCounter++;
+				if(invincibleCounter > 60) {
+					invincible = false;
+					invincibleCounter = 0;
+				}
+				}
 			}
 				//Zusammenfassend ist playerSpeed die Anzahl an Pixeln, wie sich der Character auf dem Bildschirm bewegt. also 100 (X) + 4 (PlayerSpeed) = 104 (X)
 				
@@ -192,7 +199,15 @@ public class Player extends Entity {
 		}
 		
 	}
-	
+	public void contactMonster(int i) {
+		if(i != 999) {
+			
+			if (invincible == false) {
+			life -= 1;
+			invincible = true;
+			}
+		}
+	}
 	public void draw (Graphics2D g2) {
 
 		//g2.setColor(Color.white);
@@ -253,11 +268,19 @@ public class Player extends Entity {
 			y = gp.screenHeight - (gp.worldHeight - worldY);
 		}
 		
-			
+			if (invincible == true) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F)); //Spieler wird Halbtransparent angezeigt
+			}
 		
 		g2.drawImage (image, x, y, null); //Zeichnet den Player
 		
+		//RESET
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1F));
 		
+		
+//		g2.setFont(new Font("Arial Rounded TM Bold", Font.BOLD, 26));
+//		g2.setColor(Color.white);
+//		g2.drawString("Invincible: "+invincibleCounter, 10, 400);
 	
 	
 }

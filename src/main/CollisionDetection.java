@@ -152,36 +152,45 @@ int index = 999;
 				case "up":
 					entity.solidArea.y -= entity.speed;
 					if(entity.solidArea.intersects(target[i].solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
+						if(target[i] != entity) {
 						entity.collisionOn = true;
 						index = i;
 						}
+					}
 					break;
 					
 				case "down":
 					entity.solidArea.y += entity.speed;
 					if(entity.solidArea.intersects(target[i].solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
+						if(target[i] != entity) {
 						entity.collisionOn = true;
 						index = i;
-						
-					break;
+						}
 					}
+					break;
+					
 				case "left":
 					entity.solidArea.x -= entity.speed;
 					if(entity.solidArea.intersects(target[i].solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
+						if(target[i] != entity) {
 						entity.collisionOn = true;
 							index = i;
-						
-					break;
+						}
 					}
+					break;
+					
 				case "right":
 					entity.solidArea.x += entity.speed;
-					if(entity.solidArea.intersects(target[i].solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
-						entity.collisionOn = true;
-
-							index = i;
+					if(entity.solidArea.intersects(target[i].solidArea)) {
+						if(target[i] != entity) {
 						
-					break;
+						entity.collisionOn = true;
+						index = i;
 					}
+					}
+					break;
+					
+					
 				}
 				entity.solidArea.x = entity.solidAreaDefaultX;
 				entity.solidArea.y = entity.solidAreaDefaultY;
@@ -193,9 +202,9 @@ int index = 999;
 		
 		return index;
 	}
-	public void checkPlayer(Entity entity) {
+	public boolean checkPlayer(Entity entity) {
 		
-			
+		boolean contactPlayer = false;
 			//entity position der solid area
 			entity.solidArea.x = entity.worldX + entity.solidArea.x;
 			entity.solidArea.y = entity.worldY + entity.solidArea.y;
@@ -207,37 +216,39 @@ int index = 999;
 			switch (entity.direction) {
 			case "up":
 				entity.solidArea.y -= entity.speed;
-				if(entity.solidArea.intersects(gp.player.solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
-					entity.collisionOn = true;
-					}
+				
+					
 				break;
 				
 			case "down":
 				entity.solidArea.y += entity.speed;
-				if(entity.solidArea.intersects(gp.player.solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
-					entity.collisionOn = true;
+				
 					
 				break;
-				}
+				
 			case "left":
 				entity.solidArea.x -= entity.speed;
-				if(entity.solidArea.intersects(gp.player.solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
-					entity.collisionOn = true;
+				
 					
 				break;
-				}
+				
 			case "right":
 				entity.solidArea.x += entity.speed;
-				if(entity.solidArea.intersects(gp.player.solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
-					entity.collisionOn = true;
+				
 					
 				break;
 				}
-			}
+			
+		if(entity.solidArea.intersects(gp.player.solidArea)) { //es wird überprüft, ob diese beiden Rechtecke miteinander Collidieren, also entity mit Object
+		entity.collisionOn = true;
+		contactPlayer = true;
+		}
+		
 			entity.solidArea.x = entity.solidAreaDefaultX;
 			entity.solidArea.y = entity.solidAreaDefaultY;
 			gp.player.solidArea.x = gp.player.solidAreaDefaultX;
 			gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+			return contactPlayer;
 	}
 }
 //test
