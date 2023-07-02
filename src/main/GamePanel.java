@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	TileManager tileM = new TileManager(this);
 	
-	KeyHandler keyH = new KeyHandler(this);				//KeyHandler wird implementiert
+	public KeyHandler keyH = new KeyHandler(this);				//KeyHandler wird implementiert
 	Thread gameThread; 								//eine Thread wird einmal gestartet und läuft danach kontinuierlich weiter
 	public CollisionDetection cDetection = new CollisionDetection(this);
 	public UI ui = new UI(this);
@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public Entity[] npc = new Entity[10];
 	
 	public int gameState;
+	public final int titleState = 0;
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
@@ -69,7 +70,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		aSetter.setObject();
 		aSetter.setNPC();
-		gameState = playState;
+		gameState = titleState;
 	}
 	
 	public void startGameThread() {
@@ -115,7 +116,7 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 			
 			if (timer >= 1000000000) {
-				System.out.println("FPS:"+drawCount);
+//				System.out.println("FPS:"+drawCount);
 				drawCount = 0;
 				timer = 0;
 			}
@@ -152,7 +153,11 @@ public class GamePanel extends JPanel implements Runnable{
 			drawStart = System.nanoTime();
 		}
 		
-		
+		if (gameState == titleState) {
+			ui.draw(g2);
+			
+		}
+		else {
 		
 		tileM.draw(g2); //wichtig das zuerst die Tiles, dann der Player Gezeichnet wird. (Render-Priorität)
 		
@@ -171,7 +176,7 @@ public class GamePanel extends JPanel implements Runnable{
 		player.draw(g2);
 		
 		ui.draw(g2);
-		
+		}
 		
 		//DEBUG
 		if(keyH.checkDrawTime == true) {

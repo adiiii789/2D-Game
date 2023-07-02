@@ -123,13 +123,13 @@ public class Player extends Entity {
 						spriteNum = 1;
 					}
 					spriteCounter = 0;
-				}
+				}}
 				
 			
 			}
 				//Zusammenfassend ist playerSpeed die Anzahl an Pixeln, wie sich der Character auf dem Bildschirm bewegt. also 100 (X) + 4 (PlayerSpeed) = 104 (X)
 				
-	}
+	
 	public void pickUpObject(int i) {
 		
 		if(i != 999) {
@@ -173,8 +173,15 @@ public class Player extends Entity {
 	}
 	public void interactNPC(int i) {
 		if(i != 999) {
-			System.out.println("you are hitting an npc!");
+			
+			if(gp.keyH.enterPressed == true) {
+				gp.gameState = gp.dialogueState;
+				gp.npc[i].speak();
+			}
+			
+			
 		}
+		gp.keyH.enterPressed = false;
 	}
 	
 	public void draw (Graphics2D g2) {
