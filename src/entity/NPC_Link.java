@@ -13,6 +13,7 @@ public class NPC_Link extends Entity{
 		speed = 2;
 		
 		getImage();
+		setDialogue();
 		
 	}
 	public void getImage () {
@@ -26,6 +27,12 @@ public class NPC_Link extends Entity{
 		right1 = setup("/player/link_right_1");
 		right2 = setup("/player/link_right_2");
 
+	}
+	public void setDialogue() {
+		dialogues[0] = "Hello, unknown Stranger! \nas you may see, im an Adventurer \nmyself";
+		dialogues[1] = "It is dangerous to go alone.";
+		dialogues[2] = "Take this!";
+		dialogues[3] = "Git Gud :D";
 	}
 	public void setAction() { //simple AI für den Charakter
 		
@@ -55,5 +62,14 @@ public class NPC_Link extends Entity{
 		actionLockCounter = 0;
 		
 	}
+		
+			
+		}
+	public void speak() { //Methode für Charakterspezifische Eigenschaften
+		
+		super.speak();
+		
+		}
 	}
-}
+	
+
