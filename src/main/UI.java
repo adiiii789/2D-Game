@@ -11,6 +11,8 @@ import java.text.DecimalFormat;
 import javax.imageio.ImageIO;
 
 import entity.Player;
+import object.OBJ_Heart;
+import object.SuperObject;
 
 //import object.OBJ_Key;
 
@@ -21,6 +23,7 @@ public class UI {
 	Graphics2D g2;
 	Font arial_R_40;
 	Font arial_R_80B = new Font("Arial Rounded MT Bold", Font.BOLD, 80);
+	BufferedImage heart_full, heart_half, heart_blank;
 //	BufferedImage keyImage;
 	public boolean messageON = false;
 	public String message = "";
@@ -39,6 +42,13 @@ public class UI {
 
 //		OBJ_Key key = new OBJ_Key(gp);
 //		keyImage = key.image;
+		
+		//HUD
+		
+		SuperObject heart = new OBJ_Heart(gp);
+		heart_full = heart.image;
+		heart_half = heart.image2;
+		heart_blank = heart.image3;
 	}
 	public void showMessage(String text) {
 		
@@ -56,14 +66,16 @@ public class UI {
 		}
 		
 		if (gp.gameState == gp.playState) {
-			
+			drawPlayerLife();
 			
 		}
 		if (gp.gameState == gp.pauseState) {
+			drawPlayerLife();
 			drawPauseScreen();
 			
 		}
 		if (gp.gameState == gp.dialogueState) {
+			drawPlayerLife();
 			drawDialogueScreen();
 		}
 		
@@ -128,6 +140,35 @@ public class UI {
 //			}
 //			}
 //		}
+	}
+	public void drawPlayerLife() {
+		
+		gp.player.life = 5;
+		
+		int x = gp.tileSize/2;
+		int y = gp.tileSize/2;
+		
+		int i = 0;
+		
+		while(i < gp.player.maxLife/2) {
+			g2.drawImage(heart_blank,x,y,null);
+			i++;
+			x += gp.tileSize+20;
+		}
+		x = gp.tileSize/2;
+		y = gp.tileSize/2;
+		i = 0;
+		
+		 while ( i < gp.player.life) {
+			 g2.drawImage(heart_half,x,y,null);
+			 i++;
+			 if (i < gp.player.life) {
+				 g2.drawImage(heart_full,x,y,null);
+			 }
+			 i++;
+			 x+= gp.tileSize+20;
+		 }
+		
 	}
 	public void drawTitleScreen() {
 		
