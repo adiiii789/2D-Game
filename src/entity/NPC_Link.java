@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Random;
+
 import main.GamePanel;
 
 public class NPC_Link extends Entity{
@@ -8,7 +10,7 @@ public class NPC_Link extends Entity{
 		super(gp);
 		
 		direction = "down";
-		speed = 3;
+		speed = 2;
 		
 		getImage();
 		
@@ -25,5 +27,33 @@ public class NPC_Link extends Entity{
 		right2 = setup("/player/link_right_2");
 
 	}
-
+	public void setAction() { //simple AI für den Charakter
+		
+		actionLockCounter++;
+		
+		
+		if(actionLockCounter == 60) {
+			Random random = new Random();
+			int i = random.nextInt(100)+1; //Zufällige Zahl zwischen 1 und 99+1
+		
+			if (i <= 20) {
+				direction = "up";
+			}
+			if (i > 20 && i <= 40) {
+				direction = "down";
+			}
+			if (i > 40 && i <= 60) {
+				direction = "left";
+			}
+			if (i > 60 && i <= 80) {
+				direction = "right";
+			if (i > 80 && i <= 100) {
+				direction = "null";
+			}
+			
+		}
+		actionLockCounter = 0;
+		
+	}
+	}
 }

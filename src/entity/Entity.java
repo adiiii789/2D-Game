@@ -24,78 +24,133 @@ public class Entity {
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
 	
-	public Rectangle solidArea; //Erstellt ein Unsichtbbares Rechteck, welches uns als collisionbox dient. In modernen 3D Spielen nutzt man dafür einen Capsule collider
+	public Rectangle solidArea = new Rectangle(0,0, 48, 48); //Erstellt ein Unsichtbbares Rechteck, welches uns als collisionbox dient. In modernen 3D Spielen nutzt man dafür einen Capsule collider
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
+	public int actionLockCounter = 0;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
-	public void draw (Graphics2D g2) {
-		BufferedImage image = null;
-		int screenX = worldX - gp.player.worldX + gp.player.screenX; //Wo wird das Tile auf dem Fenster gezeichnet
-		int screenY = worldY - gp.player.worldY + gp.player.screenY; //screenX = 0 heißt also vom Fenster die obere linke ecke
-																	 //der part neben worldxy ist ein Offset, damit der Player nicht in der Ecke dargestellt wird
-		  if(gp.player.worldX < gp.player.screenX) {
-			   screenX = worldX;
-			  }
-			  if(gp.player.worldY < gp.player.screenY) {
-			   screenY = worldY;
-			  }   
-			  int rightOffset = gp.screenWidth - gp.player.screenX;      
-			  if(rightOffset > gp.worldWidth - gp.player.worldX) {
-			   screenX = gp.screenWidth - (gp.worldWidth - worldX);
-			  } 
-			  int bottomOffset = gp.screenHeight - gp.player.screenY;
-			  if(bottomOffset > gp.worldHeight - gp.player.worldY) {
-			   screenY = gp.screenHeight - (gp.worldHeight - worldY);
-			  }
-		if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-			worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-			worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-			worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+	public void setAction() { //kann von der Subklasse überschrieben werden
+		
+	}
+	public void update() {
+		setAction(); //priorisiert die setAction von der Subclass
+		
+		collisionOn = false;
+		gp.cDetection.checkTile(this);
+		gp.cDetection.checkObject(this, false);
+		gp.cDetection.checkPlayer(this);
+		
+		if(collisionOn == false) { 
 			
-			switch (direction) {
-			case "up": 
-				if (spriteNum == 1) { //Animation, wenn das eine bild mit der ersten sprite gezeichnet wurde, wird dies mit dem zweiten ersetzt
-					image = up1;//speichere ausgehend von dem Imput das Jeweilige bild
-				}
-				if (spriteNum == 2) {
-					image = up2;
-				}
+			switch(direction) {
+			case "up":
+				worldY -= speed; // kurzschreibweise von playerY = playerY - playerSpeed;
 				break;
 			case "down":
-				if (spriteNum == 1) {
-					image = down1;
-				}
-				if (spriteNum == 2) {
-					image = down2;
-				}
+				worldY += speed;
 				break;
 			case "left":
-				if (spriteNum == 1) {
-					image = left1;
-				}
-				if (spriteNum == 2) {
-					image = left2;
-				}
+				worldX -= speed;
 				break;
 			case "right":
-				if (spriteNum == 1) {
-					image = right1;
-				}
-				if (spriteNum == 2) {
-					image = right2;
-				}
-				
+				worldX += speed;
 				break;
+			case "null":
+				worldX = 0;
+			}
 		}
 			
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize,null);
+		
+		spriteCounter++; 	//der Switch, welcher die Sprite Animation Steuert
+		if (spriteCounter >12) {
+			if(spriteNum ==1) {
+				spriteNum =2;
+			}
+			else if (spriteNum == 2) {
+				spriteNum = 1;
+			}
+			spriteCounter = 0;
+		}
+		}
+		
+		
+	
+	 public void draw(Graphics2D g2) {
+		  
+		  BufferedImage image = null;
+		  int screenX = worldX - gp.player.worldX + gp.player.screenX;
+		  int screenY = worldY - gp.player.worldY + gp.player.screenY;
+		  
+		  // STOP MOVING CAMERA
+		  if(gp.player.worldX < gp.player.screenX) {
+		   screenX = worldX;
+		  }
+		  if(gp.player.worldY < gp.player.screenY) {
+		   screenY = worldY;
+		  }   
+		  int rightOffset = gp.screenWidth - gp.player.screenX;      
+		  if(rightOffset > gp.worldWidth - gp.player.worldX) {
+		   screenX = gp.screenWidth - (gp.worldWidth - worldX);
+		  } 
+		  int bottomOffset = gp.screenHeight - gp.player.screenY;
+		  if(bottomOffset > gp.worldHeight - gp.player.worldY) {
+		   screenY = gp.screenHeight - (gp.worldHeight - worldY);
+		  }
+		  ///////////////////
+		  
+		  switch(direction) {
+		  case "up":
+		   if(spriteNum == 1) {
+		    image = up1;
+		   }
+		   if(spriteNum == 2) {
+		    image = up2;
+		   }
+		   break;
+		  case "down":
+		   if(spriteNum == 1) {
+		    image = down1;
+		   }
+		   if(spriteNum == 2) {
+		    image = down2;
+		   }
+		   break;
+		  case "left":
+		   if(spriteNum == 1) {
+		    image = left1;    
+		   }   
+		   if(spriteNum == 2) {
+		    image = left2;
+		   }
+		   break;
+		  case "right":
+		   if(spriteNum == 1) {
+		    image = right1;
+		   }   
+		   if(spriteNum == 2) {
+		    image = right2;
+		   }
+		   break;
+		  }
+		  
+		  if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+		     worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+		     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+		     worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {      
+		   g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+		  }
+		  // If player is around the edge, draw everything
+		  else if(gp.player.worldX < gp.player.screenX ||
+		    gp.player.worldY < gp.player.screenY ||
+		    rightOffset > gp.worldWidth - gp.player.worldX ||
+		    bottomOffset > gp.worldHeight - gp.player.worldY) {
+		   g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); 
+		  }
+		 }
 
-			
-		}
-	}
 	public BufferedImage setup(String imagePath) {
 		
 		UtilityTool uTool = new UtilityTool();
