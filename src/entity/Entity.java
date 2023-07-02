@@ -1,11 +1,15 @@
 package entity;
 
 import java.awt.image.BufferedImage;
+
+import main.GamePanel;
+
 import java.awt.Rectangle;
 
 
 public class Entity {
 	
+	GamePanel gp;
 	public int worldX, worldY;
 	public int speed = 4;
 	
@@ -18,5 +22,9 @@ public class Entity {
 	public Rectangle solidArea; //Erstellt ein Unsichtbbares Rechteck, welches uns als collisionbox dient. In modernen 3D Spielen nutzt man dafür einen Capsule collider
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
+	
+	public Entity(GamePanel gp) {
+		this.gp = gp;
+	}
 }
 //test
