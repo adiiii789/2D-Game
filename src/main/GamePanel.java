@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JPanel;
 
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -28,8 +30,8 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Welt einstellungen
 	public final int maxWorldCol = 27; //Programm stirbt, wenn werte höher wie die Karte sind
-	public final int maxWorldRow = 15;
-	public final int worldWidth = tileSize * maxWorldCol;
+	public final int maxWorldRow = 36;
+	public final int worldWidth = tileSize * maxWorldCol; 
 	public final int worldHeight = tileSize * maxWorldRow;
 	
 	//FPS
@@ -38,13 +40,15 @@ public class GamePanel extends JPanel implements Runnable{
 	TileManager tileM = new TileManager(this);
 	
 	public KeyHandler keyH = new KeyHandler(this);				//KeyHandler wird implementiert
+	public EventHandler eHandler = new EventHandler(this);
 	Thread gameThread; 								//eine Thread wird einmal gestartet und läuft danach kontinuierlich weiter
 	public CollisionDetection cDetection = new CollisionDetection(this);
 	public UI ui = new UI(this);
 	public AssetSetter aSetter  = new AssetSetter(this);
 	public Player player = new Player(this,keyH);	//Player Class wird implementiert
-	public SuperObject obj[] = new SuperObject[10]; //10 slots für Objekte
+	public Entity obj[] = new Entity[10]; //10 slots für Objekte
 	public Entity[] npc = new Entity[10];
+	ArrayList<Entity> entityList = new ArrayList<>();
 	
 	public int gameState;
 	public final int titleState = 0;
@@ -161,19 +165,34 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		tileM.draw(g2); //wichtig das zuerst die Tiles, dann der Player Gezeichnet wird. (Render-Priorität)
 		
-		for (int i = 0; i < obj.length; i++) { //Jedes einzelne Objekt im Array wird aufgerufen
-			if (obj[i] != null) { //Vorbeugung der 0pointer exception
-				obj[i].draw(g2, this);
-			}
-		}
+		entityList.add(player);
+		
 		for(int i = 0; i < npc.length; i++) {
 			if(npc[i] != null) {
-				npc[i].draw(g2);
+				entityList.add(npc[i]);
 			}
 		}
-			
 		
-		player.draw(g2);
+		for (int i = 0; i < obj.length; i++) {
+			if(npc[i] != null) {
+				entityList.add(obj[i]);
+			}
+		}
+		Collections.sort(entityList, new Comparator<Entity>() {
+
+			@Override
+			public int compare(Entity e1, Entity e2) {
+				int result = Integer.compare(e1.worldY, e2.worldY);
+				return result;
+			}
+			
+		});
+		
+		for(int i = 0; i < entityList.size(); i++) {
+			entityList.get(i).draw(g2);
+		}
+		
+		entityList.clear();
 		
 		ui.draw(g2);
 		}

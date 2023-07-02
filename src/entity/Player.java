@@ -3,6 +3,7 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.beans.EventHandler;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -97,6 +98,10 @@ public class Player extends Entity {
 				int npcIndex = gp.cDetection.checkEntity(this, gp.npc);
 				interactNPC(npcIndex);
 				
+				gp.eHandler.checkEvent();
+				
+				gp.keyH.enterPressed = false;
+				
 				// wenn die Collision auf False steht, kann der Spieler sich bewegen
 				if(collisionOn == false) { 
 					
@@ -185,7 +190,7 @@ public class Player extends Entity {
 			
 			
 		}
-		gp.keyH.enterPressed = false;
+		
 	}
 	
 	public void draw (Graphics2D g2) {
@@ -251,6 +256,8 @@ public class Player extends Entity {
 			
 		
 		g2.drawImage (image, x, y, null); //Zeichnet den Player
+		
+		
 	
 	
 }
