@@ -1,5 +1,6 @@
 package main;
 
+import entity.NPC_Link;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
 import object.OBJ_Door;
@@ -31,6 +32,12 @@ public class AssetSetter {
 		gp.obj[3].worldX = 5 * gp.tileSize;
 		gp.obj[3].worldY = 5 * gp.tileSize;
 		
+	}
+	public void setNPC() {
+		
+		gp.npc[0] = new NPC_Link(gp);
+		gp.npc[0].worldX = gp.tileSize*9;
+		gp.npc[0].worldY = gp.tileSize*9;
 	}
 }
 //test

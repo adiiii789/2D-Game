@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -43,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public AssetSetter aSetter  = new AssetSetter(this);
 	public Player player = new Player(this,keyH);	//Player Class wird implementiert
 	public SuperObject obj[] = new SuperObject[10]; //10 slots für Objekte
+	public Entity[] npc = new Entity[10];
 	
 	public int gameState;
 	public final int playState = 1;
@@ -65,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setupGame() {
 		
 		aSetter.setObject();
+		aSetter.setNPC();
 		gameState = playState;
 	}
 	
@@ -148,6 +151,11 @@ public class GamePanel extends JPanel implements Runnable{
 		for (int i = 0; i < obj.length; i++) { //Jedes einzelne Objekt im Array wird aufgerufen
 			if (obj[i] != null) { //Vorbeugung der 0pointer exception
 				obj[i].draw(g2, this);
+			}
+		}
+		for(int i = 0; i < npc.length; i++) {
+			if(npc[i] != null) {
+				npc[i].draw(g2);
 			}
 		}
 			

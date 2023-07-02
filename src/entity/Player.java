@@ -13,7 +13,6 @@ import main.UtilityTool;
 
 public class Player extends Entity {
 
-	GamePanel gp;
 	KeyHandler keyH;
 	
 	public final int screenX;
@@ -22,8 +21,8 @@ public class Player extends Entity {
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
 		
+		super(gp); //es ist da um einen komischen Fehler zu beheben
 		
-		this.gp = gp;
 		this.keyH = keyH;
 		
 		screenX = gp.screenWidth/2 - (gp.tileSize/2); //da dies eine final variable ist, wird diese nicht verändert, das heißt der Character wird immer im Zentrum des Fensters gezeichnet
@@ -52,31 +51,17 @@ public class Player extends Entity {
 	}
 	public void getPlayerImage () {
 	
-		up1 = setup("back1");
-		up2 = setup("back2");
-		down1 = setup("front1");
-		down2 = setup("front2");
-		left1 = setup("left1");
-		left2 = setup("left2");
-		right1 = setup("right1");
-		right2 = setup("right2");
+		up1 = setup("/klee/back1");
+		up2 = setup("/klee/back2");
+		down1 = setup("/klee/front1");
+		down2 = setup("/klee/front2");
+		left1 = setup("/klee/left1");
+		left2 = setup("/klee/left2");
+		right1 = setup("/klee/right1");
+		right2 = setup("/klee/right2");
 
 	}
-	public BufferedImage setup(String imageName) {
-		
-		UtilityTool uTool = new UtilityTool();
-		BufferedImage image = null;
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/klee/"+imageName +".png"));
-			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return image;
-	}
+
 	public void update () { //60 mal die Sekunde Aufgerufen
 			if (keyH.upPressed == true || keyH.downPressed == true 
 					|| keyH.leftPressed == true || keyH.rightPressed == true) { //Sprite wechselt nicht, wenn nichts gedrückt wird
@@ -224,7 +209,28 @@ public class Player extends Entity {
 				
 				break;
 		}
-		g2.drawImage (image, screenX, screenY, null); //Zeichnet den Player
+		
+		int x = screenX;
+		int y = screenY;
+		
+		if (screenX > worldX) {
+			x = worldX;
+		}
+		if (screenY > worldY) {
+			y = worldY;
+		}
+		int rightOffset = gp.screenWidth - screenX;
+		if (rightOffset > gp.worldWidth - worldX) {
+			x = gp.screenWidth - (gp.worldWidth - worldX);
+		}
+		int bottomOffset = gp.screenHeight - screenY;
+		if (bottomOffset > gp.worldHeight - worldY) {
+			y = gp.screenHeight - (gp.worldHeight - worldY);
+		}
+		
+			
+		
+		g2.drawImage (image, x, y, null); //Zeichnet den Player
 	
 	
 }
