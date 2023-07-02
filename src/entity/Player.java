@@ -90,6 +90,9 @@ public class Player extends Entity {
 				int objIndex = gp.cDetection.checkObject(this,true);
 				pickUpObject(objIndex);
 				
+				int npcIndex = gp.cDetection.checkEntity(this, gp.npc);
+				interactNPC(npcIndex);
+				
 				// wenn die Collision auf False steht, kann der Spieler sich bewegen
 				if(collisionOn == false) { 
 					
@@ -106,6 +109,7 @@ public class Player extends Entity {
 					case "right":
 						worldX += speed;
 						break;
+						
 					}
 				}
 					
@@ -165,6 +169,11 @@ public class Player extends Entity {
 			
 			}
 			
+		}
+	}
+	public void interactNPC(int i) {
+		if(i != 999) {
+			System.out.println("you are hitting an npc!");
 		}
 	}
 	

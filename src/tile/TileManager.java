@@ -40,6 +40,7 @@ public class TileManager {
 			setup(5, "wall_top_right_green", true);
 			setup(6, "wall_bot_right_green", true);
 			setup(7,"black", false);
+			setup(8,"ground1", true);
 			
 
 	}
