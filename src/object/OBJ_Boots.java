@@ -11,7 +11,7 @@ public OBJ_Boots(GamePanel gp) {
 		super(gp);
 		
 		name = "Boots";
-		down1 = setup("/objects/boots");
+		down1 = setup("/objects/boots",gp.tileSize,gp.tileSize);
 		
 		
 	}

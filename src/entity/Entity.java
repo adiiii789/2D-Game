@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.image.BufferedImage;
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
@@ -18,21 +19,28 @@ public class Entity {
 	public int worldX, worldY;
 	public int speed = 4;
 	
-	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2; //speichert die PNG dateien TODO Buffer bescheiben
+	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2; //speichert die PNG dateien TODO Was ist BufferedImage?
+	public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+	public BufferedImage image, image2, image3;
 	public String direction = "down";
 	
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
 	
 	public Rectangle solidArea = new Rectangle(0,0, 48, 48); //Erstellt ein Unsichtbbares Rechteck, welches uns als collisionbox dient. In modernen 3D Spielen nutzt man dafür einen Capsule collider
+	public Rectangle attackArea = new Rectangle(0,0,0,0);
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
 	public boolean invincible = false;
 	public int invincibleCounter = 0;
+	int dyingCounter = 0;
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
-	public BufferedImage image, image2, image3;
+	boolean attacking = false;
+	boolean alive = true;
+	boolean dying = false;
+
 	public String name;
 	public boolean collision = false;
 	public int type; //0 = Player, 1 = npc, !2 = monster!
@@ -117,6 +125,14 @@ public class Entity {
 			}
 			spriteCounter = 0;
 		}
+		if (invincible == true) {
+			invincibleCounter++;
+			if(invincibleCounter > 40) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+			
+		}
 		}
 		
 		
@@ -146,39 +162,26 @@ public class Entity {
 		  
 		  switch(direction) {
 		  case "up":
-		   if(spriteNum == 1) {
-		    image = up1;
-		   }
-		   if(spriteNum == 2) {
-		    image = up2;
-		   }
+		   if(spriteNum == 1) {image = up1;}
+		   if(spriteNum == 2) {image = up2;}
 		   break;
 		  case "down":
-		   if(spriteNum == 1) {
-		    image = down1;
-		   }
-		   if(spriteNum == 2) {
-		    image = down2;
-		   }
+		   if(spriteNum == 1) {image = down1;}
+		   if(spriteNum == 2) {image = down2;}
 		   break;
 		  case "left":
-		   if(spriteNum == 1) {
-		    image = left1;    
-		   }   
-		   if(spriteNum == 2) {
-		    image = left2;
-		   }
+		   if(spriteNum == 1) {image = left1;}   
+		   if(spriteNum == 2) {image = left2;}
 		   break;
 		  case "right":
-		   if(spriteNum == 1) {
-		    image = right1;
-		   }   
-		   if(spriteNum == 2) {
-		    image = right2;
-		   }
+		   if(spriteNum == 1) {image = right1;}   
+		   if(spriteNum == 2) {image = right2;}
 		   break;
 		  }
-		  
+			if (invincible == true) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F)); //Spieler wird Halbtransparent angezeigt
+			}
+		
 		  if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
 		     worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
 		     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
@@ -191,10 +194,13 @@ public class Entity {
 		    rightOffset > gp.worldWidth - gp.player.worldX ||
 		    bottomOffset > gp.worldHeight - gp.player.worldY) {
 		   g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); 
+		   
+		   g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
 		  }
-		 }
+	 }
+	 
 
-	public BufferedImage setup(String imagePath) {
+	public BufferedImage setup(String imagePath, int width, int height) {
 		
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage image = null;
@@ -202,7 +208,7 @@ public class Entity {
 		
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream(imagePath +".png"));
-			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+			image = uTool.scaleImage(image, width, height);
 			
 			
 		} catch (IOException e) {

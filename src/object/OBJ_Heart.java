@@ -12,9 +12,9 @@ public class OBJ_Heart extends Entity{
 		super(gp);
 		
 		name = "Heart";
-		image = setup("/objects/full hearth");
-		image2 = setup("/objects/half hearth");
-		image3 = setup("/objects/no hearth");
+		image = setup("/objects/full hearth",gp.tileSize,gp.tileSize);
+		image2 = setup("/objects/half hearth",gp.tileSize,gp.tileSize);
+		image3 = setup("/objects/no hearth",gp.tileSize,gp.tileSize);
 		
 		
 		

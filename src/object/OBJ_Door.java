@@ -13,7 +13,7 @@ public OBJ_Door(GamePanel gp) {
 		super(gp);
 		
 		name = "Door";
-		down1 = setup("/objects/door");
+		down1 = setup("/objects/door",gp.tileSize,gp.tileSize);
 		collision = true;
 		
 		solidArea.x = 0;
