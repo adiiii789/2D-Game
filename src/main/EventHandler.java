@@ -93,6 +93,7 @@ public class EventHandler {
 		if (gp.keyH.enterPressed == true) {
 			
 			gp.gameState = gameState;
+			gp.player.attackCanceled = true;
 			gp.ui.currentDialogue = "You drink the Floor. \n your life has been recovered";
 			gp.player.life = gp.player.maxLife;
 			

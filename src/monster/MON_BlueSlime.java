@@ -16,7 +16,7 @@ public class MON_BlueSlime extends Entity{
 		type = 2;
 		name = "Blue Slime";
 		speed = 1;
-		maxLife = 4;
+		maxLife = 8;
 		life = maxLife;
 		
 		solidArea.x = 0;
@@ -68,5 +68,8 @@ public class MON_BlueSlime extends Entity{
 		
 	}
 	}
-	
+	public void damageReaction() {//Extends Entity ig
+		actionLockCounter = 0;
+		direction = gp.player.direction; //bewegt sich weg vom Spieler
+	}
 }

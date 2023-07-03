@@ -17,6 +17,8 @@ public class Player extends Entity {
 	public final int screenX;
 	public final int screenY;
 	public int hasKey = 0;
+	int standCounter = 0;
+	public boolean attackCanceled = false;
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
 		
@@ -137,7 +139,13 @@ public class Player extends Entity {
 						
 					}
 				}
+				if(keyH.enterPressed == true && attackCanceled == false) {
+					attacking = true;
+					spriteCounter =0;
+					
+				}
 				
+				attackCanceled = false;
 				gp.keyH.enterPressed = false;
 				
 				spriteCounter++; 	//der Switch, welcher die Sprite Animation Steuert
@@ -149,7 +157,15 @@ public class Player extends Entity {
 						spriteNum = 1;
 					}
 					spriteCounter = 0;
-				}}
+				}
+			}
+			else {
+				standCounter++;
+				if(standCounter == 20) {
+					spriteNum = 1;
+					standCounter = 0;
+				}
+			}
 				
 			if (invincible == true) {
 				invincibleCounter++;
@@ -242,13 +258,11 @@ public class Player extends Entity {
 	public void interactNPC(int i) {
 		if(gp.keyH.enterPressed == true) {
 		if(i != 999) {
+				attackCanceled = true;
 				gp.gameState = gp.dialogueState;
 				gp.npc[i].speak();
 		}
-		else {
-				
-			attacking = true;
-			}
+	
 			
 		}
 	}
@@ -266,9 +280,10 @@ public class Player extends Entity {
 			 if(gp.monster[i].invincible == false) {
 				 gp.monster[i].life -= 1;
 				 gp.monster[i].invincible = true;
+				 gp.monster[i].damageReaction();
 				 
 				 if(gp.monster[i].life <= 0) {
-					 gp.monster[i] = null;
+					 gp.monster[i].dying = true;
 				 }
 			 }
 				 
@@ -291,7 +306,6 @@ public class Player extends Entity {
 				if (spriteNum == 1) {image = up1;}
 				if (spriteNum == 2) {image = up2;}}
 			if (attacking == true) {
-				tempScreenY = screenY - gp.tileSize;
 				if (spriteNum == 1) {image = attackUp1;}
 				if (spriteNum == 2) {image = attackUp2;}}
 				break;
@@ -308,7 +322,6 @@ public class Player extends Entity {
 				if (spriteNum == 1) {image = left1;}
 				if (spriteNum == 2) {image = left2;}}
 			if(attacking == true) {
-				tempScreenX = screenX - gp.tileSize;
 				if (spriteNum == 1) {image = attackLeft1;}
 				if (spriteNum == 2) {image = attackLeft2;}}
 				break;
@@ -329,12 +342,6 @@ public class Player extends Entity {
 			tempScreenY = worldY;
 
 	}
-
-		
-	
-	
-		
-		
 		int rightOffset = gp.screenWidth - screenX;
 		if (rightOffset > gp.worldWidth - worldX) {
 				tempScreenX = gp.screenWidth - (gp.worldWidth - worldX);
@@ -349,8 +356,17 @@ public class Player extends Entity {
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4F)); //Spieler wird Halbtransparent angezeigt
 			}
 		
-		g2.drawImage (image, tempScreenX, tempScreenY, null); //Zeichnet den Player
-		
+	
+			
+			if (image == attackLeft1 || image == attackLeft2) {
+				g2.drawImage (image, tempScreenX - gp.tileSize, tempScreenY, null); 
+				}//Zeichnet den Player	
+			else if (image == attackUp1 || image == attackUp2) {
+				g2.drawImage (image, tempScreenX, tempScreenY - gp.tileSize, null);
+				} //Zeichnet den Player	
+			else {
+			g2.drawImage (image, tempScreenX, tempScreenY, null);//Zeichnet den Player
+			}
 		//RESET
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1F));
 		

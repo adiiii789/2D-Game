@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.image.BufferedImage;
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
@@ -38,8 +39,10 @@ public class Entity {
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
 	boolean attacking = false;
-	boolean alive = true;
-	boolean dying = false;
+	public boolean alive = true;
+	public boolean dying = false;
+	boolean hpBarOn = false;
+	int hpBarCounter = 0;
 
 	public String name;
 	public boolean collision = false;
@@ -51,9 +54,8 @@ public class Entity {
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
-	public void setAction() { //kann von der Subklasse überschrieben werden
-		
-	}
+	public void setAction() {} //kann von der Subklasse überschrieben werden
+	public void damageReaction() {}
 	public void speak() {
 		if (dialogues[dialogueIndex] == null) {
 			dialogueIndex = 0;
@@ -178,8 +180,33 @@ public class Entity {
 		   if(spriteNum == 2) {image = right2;}
 		   break;
 		  }
+		  if (type ==2 && hpBarOn == true) {
+			  
+			  double oneScale = (double)gp.tileSize/maxLife; //länge der Lebensleiste/ maxLeben
+			  double hpBarValue = oneScale *life;
+			  
+
+			  g2.setColor(new Color(35,35,35));
+			  g2.fillRect(screenX -2, screenY-15,gp.tileSize+5,10);
+			  
+			  g2.setColor(new Color(255,0,30));
+			  g2.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
+			  
+			  hpBarCounter++;
+			  
+			  if(hpBarCounter > 600) {
+				  hpBarCounter = 0;
+				  hpBarOn = false;
+			  }
+		  }
+		  
 			if (invincible == true) {
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F)); //Spieler wird Halbtransparent angezeigt
+				hpBarOn = true;
+				hpBarCounter = 0;
+				changeAlpha(g2, 0.4F); //Spieler wird Halbtransparent angezeigt
+			}
+			if (dying == true) {
+				dyingAnimation(g2);
 			}
 		
 		  if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
@@ -193,13 +220,52 @@ public class Entity {
 		    gp.player.worldY < gp.player.screenY ||
 		    rightOffset > gp.worldWidth - gp.player.worldX ||
 		    bottomOffset > gp.worldHeight - gp.player.worldY) {
-		   g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); 
 		   
-		   g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
+		  changeAlpha(g2, 1F);
 		  }
 	 }
 	 
 
+	 public void dyingAnimation(Graphics2D g2) {
+		if (type == 2) {
+		 dyingCounter++;
+		 
+		 int i = 5;
+		 
+		 if (dyingCounter <= i) {
+			 changeAlpha(g2, 0f);
+		 }
+		 if (dyingCounter > i && dyingCounter <= i*2) {
+			 changeAlpha(g2, 1f);
+		 }
+		 if (dyingCounter > i*2 && dyingCounter <= i*3) {
+			 changeAlpha(g2, 0f);
+		 }
+		 if (dyingCounter > i*3 && dyingCounter <= i*4) {
+			 changeAlpha(g2, 0f);
+		 }
+		 if (dyingCounter > i*4 && dyingCounter <= i*5) {
+			 changeAlpha(g2, 1f);
+		 }
+		 if (dyingCounter > i*5 && dyingCounter <= i*6) {
+			 changeAlpha(g2, 0f);
+		 }
+		 if (dyingCounter > i*6 && dyingCounter <= i*7) {
+			 changeAlpha(g2, 1f);
+		 }
+		 if (dyingCounter > i*7 && dyingCounter <= i*8) {
+			 changeAlpha(g2, 0f);
+		 }
+		 if (dyingCounter > i*8) {
+			 dying = false;
+			 alive = false;
+		 }
+		}
+	 }
+	 public void changeAlpha(Graphics2D g2, float alphaValue) {
+		 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+		 }
+	 
 	public BufferedImage setup(String imagePath, int width, int height) {
 		
 		UtilityTool uTool = new UtilityTool();
