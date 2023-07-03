@@ -9,6 +9,8 @@ import java.awt.AlphaComposite;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Bomb_Nomal;
+import object.OBJ_Shield_Wood;
 
 public class Player extends Entity {
 
@@ -54,9 +56,25 @@ public class Player extends Entity {
 		
 		direction = "down";
 		
-		
+		level = 1;
 		maxLife = 6;
 		life = maxLife;
+		strength = 1; //str = attack
+		dexterity = 1; //dex = shield
+		exp = 0;
+		nextLevelExp = 5;
+		coin = 0;
+		currentWeapon = new OBJ_Bomb_Nomal(gp);
+		currentShield = new OBJ_Shield_Wood(gp);
+		attack = getAttack();
+		defense = getDefense();
+	}
+	public int getAttack() {
+		return attack = strength *currentWeapon.attackValue;
+	}
+	public int getDefense() {
+		return defense = dexterity * currentShield.defenseValue;
+		
 	}
 	public void getPlayerImage () {
 	
@@ -226,16 +244,16 @@ public class Player extends Entity {
 			case "Key":
 				hasKey++;
 				gp.obj[i] = null; //sobald der Schlüssel berührt wird, wird er "gelöscht"
-				gp.ui.showMessage("You got a Key!");
+				gp.ui.addMessage("You got a Key!");
 				break;
 			case "Door":
 				if (hasKey > 0) {
 					gp.obj[i] = null;
 					hasKey--;
-					gp.ui.showMessage("You opend the door!");
+					gp.ui.addMessage("You opend the door!");
 				}
 				else {
-					gp.ui.showMessage("You need a key!");
+					gp.ui.addMessage("You need a key!");
 					
 				}
 				
@@ -243,7 +261,7 @@ public class Player extends Entity {
 			case "Boots":
 				speed += 2; //wenn die Schuhe eingesammelt werden, wird der Spieler Schneller
 				gp.obj[i] = null;
-				gp.ui.showMessage("Speed up!");
+				gp.ui.addMessage("Speed up!");
 				break;
 			case "Chest":
 				gp.ui.gameFinished = true;
@@ -270,7 +288,11 @@ public class Player extends Entity {
 		if(i != 999) {
 			
 			if (invincible == false) {
-			life -= 1;
+				int damage = gp.monster[i].attack - defense;
+				 if (damage < 0) {
+					 damage = 0;
+				 }
+			life -= damage;
 			invincible = true;
 			}
 		}
@@ -278,15 +300,38 @@ public class Player extends Entity {
 	public void damageMonster(int i) {
 		if (i != 999) {
 			 if(gp.monster[i].invincible == false) {
-				 gp.monster[i].life -= 1;
+				 
+				 int damage = attack - gp.monster[i].defense;
+				 if (damage < 0) {
+					 damage = 0;
+				 }
+				 
+				 gp.monster[i].life -= damage;
+				 gp.ui.addMessage(damage + "damage!");
 				 gp.monster[i].invincible = true;
 				 gp.monster[i].damageReaction();
 				 
 				 if(gp.monster[i].life <= 0) {
 					 gp.monster[i].dying = true;
+					 gp.ui.addMessage("Killed the "+gp.monster[i].name+"!");
+					 exp += gp.monster[i].exp;
+					 checkLevelUp();
 				 }
 			 }
 				 
+		}
+	}
+	public void checkLevelUp() {
+		if (exp >= nextLevelExp) {
+			level++;
+			nextLevelExp = nextLevelExp*2;
+			maxLife += 2;
+			strength++;
+			dexterity++;
+			attack = getAttack();
+			defense = getDefense();
+			
+			
 		}
 	}
 	public void draw (Graphics2D g2) {

@@ -50,8 +50,8 @@ public class EventHandler {
 		if(hit(23,5,"any")== true) {
 			damagePit(23,5,gp.dialogueState);
 		}
-		if(hit(21,5,"any")== true) {
-			healingPool(21,5,gp.dialogueState);
+		if(hit(1,31,"any")== true) {
+			healingPool(1,31,gp.dialogueState);
 		}
 		}
 		if(hit(4,1,"any")==true) {
@@ -96,6 +96,7 @@ public class EventHandler {
 			gp.player.attackCanceled = true;
 			gp.ui.currentDialogue = "You drink the Floor. \n your life has been recovered";
 			gp.player.life = gp.player.maxLife;
+			gp.aSetter.setMonster();
 			
 		}
 		

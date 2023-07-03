@@ -50,6 +50,20 @@ public class Entity {
 	
 	public int maxLife;
 	public int life;
+	public int level;
+	public int strength;
+	public int dexterity;
+	public int attack;
+	public int defense;
+	public int exp;
+	public int nextLevelExp;
+	public int coin;
+	public Entity currentWeapon;
+	public Entity currentShield;
+	
+	
+	public int attackValue;
+	public int defenseValue;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -91,7 +105,12 @@ public class Entity {
 		
 		if (this.type == 2 && contactplayer == true) {
 			if(gp.player.invincible == false) {
-				gp.player.life -= 1;
+				
+				int damage = attack - gp.player.defense;
+				 if (damage < 0) {
+					 damage = 0;
+				 }
+			gp.player.life -= damage;
 				gp.player.invincible = true;
 			}
 		}
