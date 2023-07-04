@@ -12,13 +12,15 @@ public class KeyHandler implements KeyListener {
 
 	GamePanel gp;
 	Graphics2D g2;
-	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed, shiftPressed;
+	public boolean bullethell = false;
 	
 	boolean checkDrawTime = false;
 	
 
 	public KeyHandler(GamePanel gamePanel) {
 		this.gp = gamePanel;
+		
 	}
 
 	
@@ -58,21 +60,28 @@ public class KeyHandler implements KeyListener {
 		else if (gp.gameState == gp.characterState) {
 			characterState(code);
 		}
+		else if (gp.gameState == gp.bullethellState) {
+			bullethellState(code);
+		}
+			
 		
 		
 		 
 		
 	}
+		
+
+
 		public void titleState(int code) {
 			if (code == KeyEvent.VK_W) { //VK ist der Konstante integer wert von K, welcher durch getKeyCode ermittelt wird.
 				gp.ui.commandNum--;
 				if(gp.ui.commandNum < 0) {
-					gp.ui.commandNum = 2;
+					gp.ui.commandNum = 1;
 				}
 			}
 			if (code == KeyEvent.VK_S) { //
 				gp.ui.commandNum++;
-				if(gp.ui.commandNum > 2) {
+				if(gp.ui.commandNum > 1) {
 					gp.ui.commandNum = 0;
 				}
 			}
@@ -80,10 +89,10 @@ public class KeyHandler implements KeyListener {
 				if (gp.ui.commandNum == 0) {
 					gp.gameState = gp.playState;
 				}
-				if(gp.ui.commandNum == 1) {
+				//if(gp.ui.commandNum == 1) {
 					//Coming soon
-				}
-				if(gp.ui.commandNum == 2) {
+				//}
+				if(gp.ui.commandNum == 1) {
 					System.exit(0);
 				}
 					
@@ -93,6 +102,7 @@ public class KeyHandler implements KeyListener {
 			
 		
 		public void playState(int code) {
+			bullethell = false;
 			if (code == KeyEvent.VK_W) { //VK ist der Konstante integer wert von K, welcher durch getKeyCode ermittelt wird.
 				upPressed = true;
 			}
@@ -109,6 +119,9 @@ public class KeyHandler implements KeyListener {
 			if (code == KeyEvent.VK_ESCAPE) {
 				gp.gameState = gp.pauseState;
 			}
+			if (code == KeyEvent.VK_B) {
+				gp.gameState = gp.bullethellState;
+			}
 			if (code == KeyEvent.VK_C) {
 				gp.gameState = gp.characterState;
 			}
@@ -123,13 +136,12 @@ public class KeyHandler implements KeyListener {
 			if (code == KeyEvent.VK_F3) { //
 				if(checkDrawTime == false) {
 					checkDrawTime = true;
-				
-					
 				}
 				else if (checkDrawTime == true) {
 					checkDrawTime = false;
 				}
 			}
+			
 	}
 		
 		public void pauseState(int code) {
@@ -146,7 +158,12 @@ public class KeyHandler implements KeyListener {
 		}
 		public void dialogueState(int code) {
 			if(code == KeyEvent.VK_ENTER) {
-				gp.gameState = gp.playState;
+				if(this.bullethell == false) {
+					gp.gameState = gp.playState;
+				}
+				if (this.bullethell == true) {
+					gp.gameState = gp.bullethellState;
+				}
 			}
 		}
 		public void characterState(int code) {
@@ -177,6 +194,37 @@ public class KeyHandler implements KeyListener {
 				gp.player.selectItem();
 			}
 		}
+		private void bullethellState(int code) {
+			 bullethell = true;
+			if (code == KeyEvent.VK_UP) { 
+				upPressed = true;
+			}
+			if (code == KeyEvent.VK_DOWN) { //
+				downPressed = true;
+				
+			}
+			if (code == KeyEvent.VK_LEFT) { //
+				leftPressed = true;
+			}
+			if (code == KeyEvent.VK_RIGHT) { //
+				rightPressed = true;
+			}
+			if(code == KeyEvent.VK_Y) {
+				shotKeyPressed = true;
+				
+			}
+			if(code == KeyEvent.VK_SHIFT) {
+				gp.player.speed = 1;
+				
+			}
+			if(code == KeyEvent.VK_B) {
+				gp.gameState = gp.playState;
+			}
+			
+				
+			
+			
+		}
 
 
 	@Override
@@ -203,8 +251,24 @@ public class KeyHandler implements KeyListener {
 		}
 		if(code == KeyEvent.VK_F) {
 			shotKeyPressed = false;
+		}
+		if(code == KeyEvent.VK_SHIFT) {
+			gp.player.speed = 4;
+		}
+		if (code == KeyEvent.VK_UP) { //VK ist der Konstante integer wert von K, welcher durch getKeyCode ermittelt wird.
+			upPressed = false;
+		}
+		if (code == KeyEvent.VK_DOWN) { //
+			downPressed = false;
 			
 		}
+		if (code == KeyEvent.VK_LEFT) { //
+			leftPressed = false;
+		}
+		if (code == KeyEvent.VK_RIGHT) { //
+			rightPressed = false;
+		}
 	}
+	
 
 }

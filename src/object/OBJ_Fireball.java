@@ -22,6 +22,7 @@ public class OBJ_Fireball extends Projectile{
 		
 	}
 	public void getImage() {
+		
 		up1 = setup("/projectile/Fireball",gp.tileSize,gp.tileSize);
 		up2 = setup("/projectile/Fireball",gp.tileSize,gp.tileSize);
 		down1 = setup("/projectile/Fireball",gp.tileSize,gp.tileSize);
@@ -30,6 +31,8 @@ public class OBJ_Fireball extends Projectile{
 		left2 = setup("/projectile/Fireball",gp.tileSize,gp.tileSize);
 		right1 = setup("/projectile/Fireball",gp.tileSize,gp.tileSize);
 		right2 = setup("/projectile/Fireball",gp.tileSize,gp.tileSize);
+		
+		
 		
 	}
 	public boolean haveResource(Entity user) {

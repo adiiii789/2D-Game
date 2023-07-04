@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 	}
 	public void update() {  
-		if (gameState == playState) {
+		if (gameState == playState || gameState == bullethellState) {
 			player.update(); // Player wird nur geupdated, wenn gameState auf playstate ist
 			
 			for (int i = 0; i < npc.length; i++) {

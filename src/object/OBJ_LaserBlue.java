@@ -20,6 +20,7 @@ public class OBJ_LaserBlue extends Projectile{
 		
 	}
 	public void getImage() {
+		if (gp.gameState == gp.playState) {
 		up1 = setup("/projectile/Slime laser top",gp.tileSize,gp.tileSize);
 		up2 = setup("/projectile/Slime laser top",gp.tileSize,gp.tileSize);
 		down1 = setup("/projectile/Slime laser top",gp.tileSize,gp.tileSize);
@@ -28,6 +29,9 @@ public class OBJ_LaserBlue extends Projectile{
 		left2 = setup("/projectile/Slime laser side",gp.tileSize,gp.tileSize);
 		right1 = setup("/projectile/Slime laser side",gp.tileSize,gp.tileSize);
 		right2 = setup("/projectile/Slime laser side",gp.tileSize,gp.tileSize);
+		}
+		
+			
 		
 	}
 }

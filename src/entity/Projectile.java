@@ -17,7 +17,7 @@ public class Projectile extends Entity{
 		this.direction = direction;
 		this.alive = alive;
 		this.user = user;
-		this.life = this.maxLife;
+		this.life = this.maxLife; 
 	}
 	public void update() {
 		
@@ -37,11 +37,22 @@ public class Projectile extends Entity{
 			
 		}
 		
+		if (gp.gameState == gp.playState) {
 		switch(direction) {
 		case "up": worldY -= speed; break;
 		case "down": worldY += speed; break;
 		case "left": worldX -= speed; break;
 		case "right":worldX += speed; break;
+		}
+		}
+		
+		if (gp.gameState == gp.bullethellState) {
+		switch(direction) {
+		case "up": worldY -= speed; break;
+		case "down": worldY -= speed; break;
+		case "left": worldY -= speed; break;
+		case "right":worldY -= speed; break;
+		}
 		}
 		
 		life--;

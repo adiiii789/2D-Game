@@ -158,10 +158,17 @@ public class Entity {
 				invincible = false;
 				invincibleCounter = 0;
 			}
-			if(shotAvailableCounter < 2) {
-				shotAvailableCounter++;
+			if(gp.gameState == gp.playState) {
+				if(shotAvailableCounter < 10) {
+					shotAvailableCounter++;
+				}
 			}
 			
+			if(gp.gameState == gp.playState) {
+				if(shotAvailableCounter < 2) {
+					shotAvailableCounter++;
+				}
+				}
 		}
 		}
 	public void damagePlayer (int attack) {

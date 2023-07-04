@@ -23,6 +23,7 @@ public class UI {
 	
 	GamePanel gp;
 	Graphics2D g2;
+	KeyHandler keyH;
 	Font arial_R_40;
 	Font arial_R_80B = new Font("Arial Rounded MT Bold", Font.BOLD, 80);
 	BufferedImage heart_full, heart_half, heart_blank, mana_full, mana_dry;
@@ -90,6 +91,8 @@ public class UI {
 		if (gp.gameState == gp.dialogueState) {
 			drawPlayerLife();
 			drawDialogueScreen();
+			
+			
 		}
 		
 		if (gp.gameState == gp.characterState) {
@@ -280,19 +283,19 @@ public class UI {
 			g2.drawString(">",x-gp.tileSize,y);
 		}
 		
-		text = "LOAD GAME";
-		x = getXforCenteredText(text);
-		y += gp.tileSize;
-		g2.drawString(text,x,y);
-		if (commandNum == 1) {
-			g2.drawString(">",x-gp.tileSize,y);
-		}
+//		text = "LOAD GAME";
+//		x = getXforCenteredText(text);
+//		y += gp.tileSize;
+//		g2.drawString(text,x,y);
+//		if (commandNum == 1) {
+//			g2.drawString(">",x-gp.tileSize,y);
+//		}
 		
 		text = "QUIT";
 		x = getXforCenteredText(text);
 		y += gp.tileSize;
 		g2.drawString(text,x,y);
-		if (commandNum == 2) {
+		if (commandNum == 1) {
 			g2.drawString(">",x-gp.tileSize,y);
 		}
 		

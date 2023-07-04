@@ -13,6 +13,7 @@ import main.KeyHandler;
 import object.OBJ_Bomb_Nomal;
 import object.OBJ_Boots;
 import object.OBJ_Fireball;
+import object.OBJ_LaserBlue;
 import object.OBJ_Shield_Wood;
 
 public class Player extends Entity {
@@ -97,7 +98,7 @@ public class Player extends Entity {
 		
 	}
 	public void getPlayerImage () {
-	
+		
 		up1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
 		up2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
 		down1 = setup("/klee/front1",gp.tileSize,gp.tileSize);
@@ -106,11 +107,22 @@ public class Player extends Entity {
 		left2 = setup("/klee/left2",gp.tileSize,gp.tileSize);
 		right1 = setup("/klee/right1",gp.tileSize,gp.tileSize);
 		right2 = setup("/klee/right2",gp.tileSize,gp.tileSize);
-
+	
+		if(gp.gameState == gp.bullethellState) {
+		up1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+		up2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
+		down1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+		down2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
+		left1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+		left2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
+		right1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+		right2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
+		}
+		
 	}
 	public void getPlayerAttackImage() {
 		
-		if(currentWeapon.type == type_bomb && gp.gameState == gp.playState) {
+		if(currentWeapon.type == type_bomb ) {
 			attackUp1 = setup("/klee/back_attack1",gp.tileSize,gp.tileSize*2);
 			attackUp2 = setup("/klee/back_attack2",gp.tileSize,gp.tileSize*2);
 			attackDown1 = setup("/klee/front_attack1",gp.tileSize,gp.tileSize*2);
@@ -120,7 +132,7 @@ public class Player extends Entity {
 			attackRight1 = setup("/klee/right_attack1",gp.tileSize*2,gp.tileSize);
 			attackRight2 = setup("/klee/right_attack2",gp.tileSize*2,gp.tileSize);
 		}
-		if(currentWeapon.type == type_xbomb && gp.gameState == gp.playState) {
+		if(currentWeapon.type == type_xbomb ) {
 			attackUp1 = setup("/klee/back_attack1",gp.tileSize,gp.tileSize*2);
 			attackUp2 = setup("/klee/back_attackX2",gp.tileSize,gp.tileSize*2);
 			attackDown1 = setup("/klee/front_attack1",gp.tileSize,gp.tileSize*2);
@@ -130,16 +142,7 @@ public class Player extends Entity {
 			attackRight1 = setup("/klee/right_attack1",gp.tileSize*2,gp.tileSize);
 			attackRight2 = setup("/klee/right_attackX2",gp.tileSize*2,gp.tileSize);	
 		}
-		if (gp.gameState == gp.bullethellState) {
-			up1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
-			up2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
-			down1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
-			down2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
-			left1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
-			left2 = setup("/klee/back",gp.tileSize,gp.tileSize);
-			right1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
-			right2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
-		}
+		
  	}
 
 	public void update () { //60 mal die Sekunde Aufgerufen
@@ -227,7 +230,10 @@ public class Player extends Entity {
 					standCounter = 0;
 				}
 			}
-		if(gp.keyH.shotKeyPressed == true && projectile.alive == false && projectile.haveResource(this) == true) {
+		if(gp.gameState == gp.playState) {
+			projectile = new OBJ_Fireball(gp);
+			if(gp.keyH.shotKeyPressed == true && projectile.alive == false && projectile.haveResource(this) == true) {
+				gp.keyH.shotKeyPressed = false;
 				
 				
 				projectile.set(worldX, worldY, direction, true, this);
@@ -236,8 +242,32 @@ public class Player extends Entity {
 				
 				gp.projectileList.add(projectile);
 				
-				shotAvailableCounter = 0;
+				
+				shotAvailableCounter++;
 			}
+		}
+			if(gp.gameState == gp.bullethellState) {
+				projectile = new OBJ_LaserBlue(gp);
+				
+				projectile.left1 = setup("/projectile/Slime laser top",gp.tileSize,gp.tileSize);
+				projectile.left2 = setup("/projectile/Slime laser top",gp.tileSize,gp.tileSize);
+				projectile.right1 = setup("/projectile/Slime laser top",gp.tileSize,gp.tileSize);
+				projectile.right2 = setup("/projectile/Slime laser top",gp.tileSize,gp.tileSize);
+				
+				if(gp.keyH.shotKeyPressed == true && projectile.alive == false) {
+					gp.keyH.shotKeyPressed = false;
+					
+					
+					projectile.set(worldX, worldY, direction, true, this);
+					
+					gp.projectileList.add(projectile);
+					
+					shotAvailableCounter = 0;
+					
+					shotAvailableCounter++;
+				}
+			}
+			
 		
 		manacounter++;
 		if(gp.player.mana < gp.player.maxMana && manacounter >= 200) {
@@ -455,6 +485,9 @@ public class Player extends Entity {
 			if (attacking == true) {
 				if (spriteNum == 1) {image = attackUp1;}
 				if (spriteNum == 2) {image = attackUp2;}}
+			if (gp.gameState == gp.bullethellState) {
+				if (spriteNum == 1) {image = up1;}
+				if (spriteNum == 2) {image = up2;}}
 				break;
 			case "down":
 			if(attacking == false) {
@@ -463,6 +496,9 @@ public class Player extends Entity {
 			if(attacking == true) {
 				if (spriteNum == 1) {image = attackDown1;}
 				if (spriteNum == 2) {image = attackDown2;}}
+			if (gp.gameState == gp.bullethellState) {
+				if (spriteNum == 1) {image = up1;}
+				if (spriteNum == 2) {image = up2;}}
 				break;
 			case "left":
 			if(attacking == false) {
@@ -471,6 +507,9 @@ public class Player extends Entity {
 			if(attacking == true) {
 				if (spriteNum == 1) {image = attackLeft1;}
 				if (spriteNum == 2) {image = attackLeft2;}}
+			if (gp.gameState == gp.bullethellState) {
+				if (spriteNum == 1) {image = up1;}
+				if (spriteNum == 2) {image = up2;}}
 				break;
 			case "right":
 			if(attacking == false) {
@@ -479,6 +518,9 @@ public class Player extends Entity {
 			if(attacking == true) {
 				if (spriteNum == 1) {image = attackRight1;}
 				if (spriteNum == 2) {image = attackRight2;}}
+			if (gp.gameState == gp.bullethellState) {
+				if (spriteNum == 1) {image = up1;}
+				if (spriteNum == 2) {image = up2;}}
 				break;
 		}
 	if (screenX > worldX) {

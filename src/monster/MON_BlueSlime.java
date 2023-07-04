@@ -75,11 +75,9 @@ public class MON_BlueSlime extends Entity{
 		
 		}
 		int i = new Random().nextInt(100)+1;
-		if(i > 99 
-				) {
+		if(i > 99 ) {
 			projectile.set(worldX, worldY, direction, true, this);
 			gp.projectileList.add(projectile);
-			shotAvailableCounter = 0;
 		}
 	}
 	public void damageReaction() {//Extends Entity ig
