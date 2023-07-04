@@ -12,7 +12,7 @@ public class KeyHandler implements KeyListener {
 
 	GamePanel gp;
 	Graphics2D g2;
-	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed = false;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
 	
 	boolean checkDrawTime = false;
 	
@@ -114,6 +114,10 @@ public class KeyHandler implements KeyListener {
 			}
 			if (code == KeyEvent.VK_ENTER) {
 				enterPressed = true;
+			
+			}
+			if(code == KeyEvent.VK_F) {
+				shotKeyPressed = true;
 				
 			}
 			if (code == KeyEvent.VK_F3) { //
@@ -196,6 +200,10 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_ENTER) {
 			enterPressed = false;
+		}
+		if(code == KeyEvent.VK_F) {
+			shotKeyPressed = false;
+			
 		}
 	}
 

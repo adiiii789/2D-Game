@@ -4,6 +4,7 @@ import java.util.Random;
 
 import entity.Entity;
 import main.GamePanel;
+import object.OBJ_LaserBlue;
 
 public class MON_BlueSlime extends Entity{
 
@@ -21,6 +22,7 @@ public class MON_BlueSlime extends Entity{
 		attack = 2;
 		defense = 0;
 		exp =2;
+		projectile = new OBJ_LaserBlue(gp);
 		
 		solidArea.x = 0;
 		solidArea.y = 15;
@@ -69,7 +71,16 @@ public class MON_BlueSlime extends Entity{
 		}
 		actionLockCounter = 0;
 		
-	}
+		
+		
+		}
+		int i = new Random().nextInt(100)+1;
+		if(i > 99 
+				) {
+			projectile.set(worldX, worldY, direction, true, this);
+			gp.projectileList.add(projectile);
+			shotAvailableCounter = 0;
+		}
 	}
 	public void damageReaction() {//Extends Entity ig
 		actionLockCounter = 0;

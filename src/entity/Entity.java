@@ -50,6 +50,8 @@ public class Entity {
 	
 	public int maxLife;
 	public int life;
+	public int maxMana;
+	public int mana;
 	public int level;
 	public int strength;
 	public int dexterity;
@@ -60,7 +62,10 @@ public class Entity {
 	public int coin;
 	public Entity currentWeapon;
 	public Entity currentShield;
-	
+	public Entity currentProjectile;
+	public Projectile projectile;
+	public int useCost;
+	public int shotAvailableCounter = 0;
 	
 	public int attackValue;
 	public int defenseValue;
@@ -114,17 +119,8 @@ public class Entity {
 		boolean contactplayer = gp.cDetection.checkPlayer(this);
 		
 		if (this.type == type_monster && contactplayer == true) {
-			if(gp.player.invincible == false) {
-				
-				int damage = attack - gp.player.defense;
-				 if (damage < 0) {
-					 damage = 0;
-				 }
-			gp.player.life -= damage;
-				gp.player.invincible = true;
-			}
+			damagePlayer(attack);
 		}
-		
 		if(collisionOn == false) { 
 			
 			switch(direction) {
@@ -162,9 +158,25 @@ public class Entity {
 				invincible = false;
 				invincibleCounter = 0;
 			}
+			if(shotAvailableCounter < 2) {
+				shotAvailableCounter++;
+			}
 			
 		}
 		}
+	public void damagePlayer (int attack) {
+		
+		if(gp.player.invincible == false) {
+			
+			int damage = attack - gp.player.defense;
+			 if (damage < 0) {
+				 damage = 0;
+			 }
+		gp.player.life -= damage;
+			gp.player.invincible = true;
+		}
+	}
+	
 		
 		
 	

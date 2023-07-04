@@ -94,8 +94,9 @@ public class EventHandler {
 			
 			gp.gameState = gameState;
 			gp.player.attackCanceled = true;
-			gp.ui.currentDialogue = "You drink the Floor. \n your life has been recovered";
+			gp.ui.currentDialogue = "You drink the Floor. \n your life & mana has been \n recovered!";
 			gp.player.life = gp.player.maxLife;
+			gp.player.mana = gp.player.maxMana;
 			gp.aSetter.setMonster();
 			
 		}

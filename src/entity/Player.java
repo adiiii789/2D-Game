@@ -12,6 +12,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Bomb_Nomal;
 import object.OBJ_Boots;
+import object.OBJ_Fireball;
 import object.OBJ_Shield_Wood;
 
 public class Player extends Entity {
@@ -26,7 +27,7 @@ public class Player extends Entity {
 	
 	public ArrayList<Entity> inventory = new ArrayList<>();
 	public final int maxInventorySize = 20;
-	
+	int manacounter = 0;
 	
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
@@ -67,6 +68,8 @@ public class Player extends Entity {
 		level = 1;
 		maxLife = 6;
 		life = maxLife;
+		maxMana = 4;
+		mana = maxMana;
 		strength = 1; //str = attack
 		dexterity = 1; //dex = shield
 		exp = 0;
@@ -74,6 +77,7 @@ public class Player extends Entity {
 		coin = 0;
 		currentWeapon = new OBJ_Bomb_Nomal(gp);
 		currentShield = new OBJ_Shield_Wood(gp);
+		projectile = new OBJ_Fireball(gp);
 		attack = getAttack();
 		defense = getDefense();
 	}
@@ -106,7 +110,7 @@ public class Player extends Entity {
 	}
 	public void getPlayerAttackImage() {
 		
-		if(currentWeapon.type == type_bomb) {
+		if(currentWeapon.type == type_bomb && gp.gameState == gp.playState) {
 			attackUp1 = setup("/klee/back_attack1",gp.tileSize,gp.tileSize*2);
 			attackUp2 = setup("/klee/back_attack2",gp.tileSize,gp.tileSize*2);
 			attackDown1 = setup("/klee/front_attack1",gp.tileSize,gp.tileSize*2);
@@ -116,7 +120,7 @@ public class Player extends Entity {
 			attackRight1 = setup("/klee/right_attack1",gp.tileSize*2,gp.tileSize);
 			attackRight2 = setup("/klee/right_attack2",gp.tileSize*2,gp.tileSize);
 		}
-		if(currentWeapon.type == type_xbomb) {
+		if(currentWeapon.type == type_xbomb && gp.gameState == gp.playState) {
 			attackUp1 = setup("/klee/back_attack1",gp.tileSize,gp.tileSize*2);
 			attackUp2 = setup("/klee/back_attackX2",gp.tileSize,gp.tileSize*2);
 			attackDown1 = setup("/klee/front_attack1",gp.tileSize,gp.tileSize*2);
@@ -125,6 +129,16 @@ public class Player extends Entity {
 			attackLeft2 = setup("/klee/left_attackX2",gp.tileSize*2,gp.tileSize);
 			attackRight1 = setup("/klee/right_attack1",gp.tileSize*2,gp.tileSize);
 			attackRight2 = setup("/klee/right_attackX2",gp.tileSize*2,gp.tileSize);	
+		}
+		if (gp.gameState == gp.bullethellState) {
+			up1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+			up2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
+			down1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+			down2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
+			left1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+			left2 = setup("/klee/back",gp.tileSize,gp.tileSize);
+			right1 = setup("/klee/back1",gp.tileSize,gp.tileSize);
+			right2 = setup("/klee/back2",gp.tileSize,gp.tileSize);
 		}
  	}
 
@@ -213,6 +227,24 @@ public class Player extends Entity {
 					standCounter = 0;
 				}
 			}
+		if(gp.keyH.shotKeyPressed == true && projectile.alive == false && projectile.haveResource(this) == true) {
+				
+				
+				projectile.set(worldX, worldY, direction, true, this);
+				
+				projectile.subtractResource(this);
+				
+				gp.projectileList.add(projectile);
+				
+				shotAvailableCounter = 0;
+			}
+		
+		manacounter++;
+		if(gp.player.mana < gp.player.maxMana && manacounter >= 200) {
+			manacounter = 0;
+			gp.player.mana +=1;
+		}
+			
 				
 			if (invincible == true) {
 				invincibleCounter++;
@@ -221,6 +253,7 @@ public class Player extends Entity {
 					invincibleCounter = 0;
 				}
 				}
+			
 			}
 				//Zusammenfassend ist playerSpeed die Anzahl an Pixeln, wie sich der Character auf dem Bildschirm bewegt. also 100 (X) + 4 (PlayerSpeed) = 104 (X)
 				
@@ -248,7 +281,7 @@ public class Player extends Entity {
 			solidArea.height = attackArea.height;
 			
 			int monsterIndex = gp.cDetection.checkEntity(this, gp.monster);
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack);
 			
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -343,7 +376,7 @@ public class Player extends Entity {
 			}
 		}
 	}
-	public void damageMonster(int i) {
+	public void damageMonster(int i, int attack) {
 		if (i != 999) {
 			 if(gp.monster[i].invincible == false) {
 				 
@@ -377,6 +410,8 @@ public class Player extends Entity {
 			attack = getAttack();
 			defense = getDefense();
 			
+			gp.gameState = gp.dialogueState;
+			gp.ui.currentDialogue = "You are level "+level +"now!\nYou feel stronger!";
 			
 		}
 	}
