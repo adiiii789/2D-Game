@@ -64,6 +64,16 @@ public class Entity {
 	
 	public int attackValue;
 	public int defenseValue;
+	public String description ="";
+	
+	public final int type_player = 0;
+	public final int type_npc = 1;
+	public final int type_monster = 2;
+	public final int type_bomb = 3;
+	public final int type_xbomb = 4;
+	public final int type_shield = 5;
+	public final int type_consumable = 6;
+	
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -103,7 +113,7 @@ public class Entity {
 		gp.cDetection.checkEntity(this, gp.monster);
 		boolean contactplayer = gp.cDetection.checkPlayer(this);
 		
-		if (this.type == 2 && contactplayer == true) {
+		if (this.type == type_monster && contactplayer == true) {
 			if(gp.player.invincible == false) {
 				
 				int damage = attack - gp.player.defense;
@@ -241,6 +251,7 @@ public class Entity {
 		    bottomOffset > gp.worldHeight - gp.player.worldY) {
 		   
 		  changeAlpha(g2, 1F);
+		  
 		  }
 	 }
 	 
@@ -276,7 +287,6 @@ public class Entity {
 			 changeAlpha(g2, 0f);
 		 }
 		 if (dyingCounter > i*8) {
-			 dying = false;
 			 alive = false;
 		 }
 		}

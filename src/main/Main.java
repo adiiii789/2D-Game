@@ -6,13 +6,16 @@ import java.net.URL;
 import javax.swing.JFrame;
 
 public class Main {
-
+/**
+ * 
+ * @param args
+ */
 	public static void main(String[] args) {
 		
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//Wenn x gedrückt wird, schließt das Programm
 		window.setResizable(false);								//Man kann nicht mit dem Mauszeiger das Fenster Transformieren
-		window.setTitle("The Legend of Zelda"); 				//Name der erstellten Java-Application
+		window.setTitle("The Legend of Klee"); 				//Name der erstellten Java-Application
 		URL url = Main.class.getResource("/klee/front1.png");
 	    window.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
 		

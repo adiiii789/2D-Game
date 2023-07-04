@@ -5,11 +5,13 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.awt.AlphaComposite;
 
 import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Bomb_Nomal;
+import object.OBJ_Boots;
 import object.OBJ_Shield_Wood;
 
 public class Player extends Entity {
@@ -21,6 +23,11 @@ public class Player extends Entity {
 	public int hasKey = 0;
 	int standCounter = 0;
 	public boolean attackCanceled = false;
+	
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public final int maxInventorySize = 20;
+	
+	
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
 		
@@ -39,13 +46,14 @@ public class Player extends Entity {
 		solidArea.width = 24;
 		solidArea.height = 24;
 		
-		attackArea.width = 48;
-		attackArea.height = 48;
+		//attackArea.width = 48;
+		//attackArea.height = 48;
 		
 		
 		setDefaultValues(); //aufruf der setdefautvalues methode
 		getPlayerImage();
 		getPlayerAttackImage();
+		setItems();
 	}
 	
 	public void setDefaultValues () {
@@ -69,7 +77,15 @@ public class Player extends Entity {
 		attack = getAttack();
 		defense = getDefense();
 	}
+	public void setItems() {
+		inventory.add(currentWeapon);
+		inventory.add(currentShield);
+		inventory.add(new OBJ_Boots(gp));
+		
+	}
 	public int getAttack() {
+		attackArea = currentWeapon.attackArea;
+		
 		return attack = strength *currentWeapon.attackValue;
 	}
 	public int getDefense() {
@@ -89,14 +105,27 @@ public class Player extends Entity {
 
 	}
 	public void getPlayerAttackImage() {
-		attackUp1 = setup("/klee/back_attack1",gp.tileSize,gp.tileSize*2);
-		attackUp2 = setup("/klee/back_attack2",gp.tileSize,gp.tileSize*2);
-		attackDown1 = setup("/klee/front_attack1",gp.tileSize,gp.tileSize*2);
-		attackDown2 = setup("/klee/front_attack2",gp.tileSize,gp.tileSize*2);
-		attackLeft1 = setup("/klee/left_attack1",gp.tileSize*2,gp.tileSize);
-		attackLeft2 = setup("/klee/left_attack2",gp.tileSize*2,gp.tileSize);
-		attackRight1 = setup("/klee/right_attack1",gp.tileSize*2,gp.tileSize);
-		attackRight2 = setup("/klee/right_attack2",gp.tileSize*2,gp.tileSize);
+		
+		if(currentWeapon.type == type_bomb) {
+			attackUp1 = setup("/klee/back_attack1",gp.tileSize,gp.tileSize*2);
+			attackUp2 = setup("/klee/back_attack2",gp.tileSize,gp.tileSize*2);
+			attackDown1 = setup("/klee/front_attack1",gp.tileSize,gp.tileSize*2);
+			attackDown2 = setup("/klee/front_attack2",gp.tileSize,gp.tileSize*2);
+			attackLeft1 = setup("/klee/left_attack1",gp.tileSize*2,gp.tileSize);
+			attackLeft2 = setup("/klee/left_attack2",gp.tileSize*2,gp.tileSize);
+			attackRight1 = setup("/klee/right_attack1",gp.tileSize*2,gp.tileSize);
+			attackRight2 = setup("/klee/right_attack2",gp.tileSize*2,gp.tileSize);
+		}
+		if(currentWeapon.type == type_xbomb) {
+			attackUp1 = setup("/klee/back_attack1",gp.tileSize,gp.tileSize*2);
+			attackUp2 = setup("/klee/back_attackX2",gp.tileSize,gp.tileSize*2);
+			attackDown1 = setup("/klee/front_attack1",gp.tileSize,gp.tileSize*2);
+			attackDown2 = setup("/klee/front_attackX2",gp.tileSize,gp.tileSize*2);
+			attackLeft1 = setup("/klee/left_attack1",gp.tileSize*2,gp.tileSize);
+			attackLeft2 = setup("/klee/left_attackX2",gp.tileSize*2,gp.tileSize);
+			attackRight1 = setup("/klee/right_attack1",gp.tileSize*2,gp.tileSize);
+			attackRight2 = setup("/klee/right_attackX2",gp.tileSize*2,gp.tileSize);	
+		}
  	}
 
 	public void update () { //60 mal die Sekunde Aufgerufen
@@ -237,42 +266,59 @@ public class Player extends Entity {
 		if(i != 999) {
 			
 			
-			String objectName = gp.obj[i].name;
+			String text;
 			
-			switch (objectName) {
-			
-			case "Key":
-				hasKey++;
-				gp.obj[i] = null; //sobald der Schlüssel berührt wird, wird er "gelöscht"
-				gp.ui.addMessage("You got a Key!");
-				break;
-			case "Door":
-				if (hasKey > 0) {
-					gp.obj[i] = null;
-					hasKey--;
-					gp.ui.addMessage("You opend the door!");
-				}
-				else {
-					gp.ui.addMessage("You need a key!");
-					
-				}
+			if(inventory.size() != maxInventorySize) {
 				
-				break;
-			case "Boots":
-				speed += 2; //wenn die Schuhe eingesammelt werden, wird der Spieler Schneller
-				gp.obj[i] = null;
-				gp.ui.addMessage("Speed up!");
-				break;
-			case "Chest":
-				gp.ui.gameFinished = true;
-				break;
-				
-			
-			
+				inventory.add(gp.obj[i]);
+				text = "got a "+ gp.obj[i].name +"!";
 			}
+			else {
+				text ="You cannot carry any more!";
+			}
+			gp.ui.addMessage(text);
+			
+			gp.obj[i] = null;
 			
 		}
-	}
+	}		
+			
+			
+//			String objectName = gp.obj[i].name;
+//			
+//			switch (objectName) {
+//			
+//			case "Key":
+//				hasKey++;
+//				gp.obj[i] = null; //sobald der Schlüssel berührt wird, wird er "gelöscht"
+//				gp.ui.addMessage("You got a Key!");
+//				break;
+//			case "Door":
+//				if (hasKey > 0) {
+//					gp.obj[i] = null;
+//					hasKey--;
+//					gp.ui.addMessage("You opend the door!");
+//				}
+//				else {
+//					gp.ui.addMessage("You need a key!");
+//					
+//				}
+//				
+//				break;
+//			case "Boots":
+//				speed += 2; //wenn die Schuhe eingesammelt werden, wird der Spieler Schneller
+//				gp.obj[i] = null;
+//				gp.ui.addMessage("Speed up!");
+//				break;
+//			case "Chest":
+//				gp.ui.gameFinished = true;
+//				break;
+//				
+//			
+//			
+//			}
+//			
+
 	public void interactNPC(int i) {
 		if(gp.keyH.enterPressed == true) {
 		if(i != 999) {
@@ -287,7 +333,7 @@ public class Player extends Entity {
 	public void contactMonster(int i) {
 		if(i != 999) {
 			
-			if (invincible == false) {
+			if (invincible == false && gp.monster[i].dying == false) {
 				int damage = gp.monster[i].attack - defense;
 				 if (damage < 0) {
 					 damage = 0;
@@ -332,6 +378,27 @@ public class Player extends Entity {
 			defense = getDefense();
 			
 			
+		}
+	}
+	public void selectItem() {
+		int itemIndex = gp.ui.getItemIndexOnSlot();
+		
+		if(itemIndex < inventory.size()) {
+			Entity selectedItem = inventory.get(itemIndex);
+			
+			if(selectedItem.type == type_bomb || selectedItem.type == type_xbomb) {
+				currentWeapon = selectedItem;
+				attack = getAttack();
+				getPlayerAttackImage();
+				
+			}
+			if(selectedItem.type == type_shield) {
+				currentShield = selectedItem;
+				defense = getDefense(); 
+			}
+			if(selectedItem.type == type_consumable) {
+				
+			}
 		}
 	}
 	public void draw (Graphics2D g2) {

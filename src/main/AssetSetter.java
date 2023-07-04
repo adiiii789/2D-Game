@@ -6,6 +6,8 @@ import object.OBJ_Boots;
 import object.OBJ_Chest;
 import object.OBJ_Door;
 import object.OBJ_Key;
+import object.OBJ_Shield_Blue;
+import object.OBJ_X_Bomb;
 
 public class AssetSetter {
 
@@ -16,22 +18,19 @@ public class AssetSetter {
 	}
 	
 	public void setObject() {
+		int i = 0;
 		
-		gp.obj[0] = new OBJ_Key(gp);
-		gp.obj[0].worldX = -1 * gp.tileSize;
-		gp.obj[0].worldY = -1 * gp.tileSize;
-		
-		//gp.obj[1] = new OBJ_Door(gp);
-		//gp.obj[1].worldX = 15 * gp.tileSize;
-		//gp.obj[1].worldY = 5 * gp.tileSize;
-		
-//		gp.obj[2] = new OBJ_Chest(gp);
-//		gp.obj[2].worldX = 8 * gp.tileSize;
-//		gp.obj[2].worldY = 8 * gp.tileSize;
-		
-		gp.obj[2] = new OBJ_Boots(gp);
-		gp.obj[2].worldX = 5 * gp.tileSize;
-		gp.obj[2].worldY = 5 * gp.tileSize;
+		gp.obj[i] = new OBJ_Boots(gp);
+		gp.obj[i].worldX = 5 *  gp.tileSize;
+		gp.obj[i].worldY = 5 * gp.tileSize;
+		i++;
+		gp.obj[i] = new OBJ_X_Bomb(gp);
+		gp.obj[i].worldX = 7 *  gp.tileSize;
+		gp.obj[i].worldY = 7 * gp.tileSize;
+		i++;
+		gp.obj[i] = new OBJ_Shield_Blue(gp);
+		gp.obj[i].worldX = 9 *  gp.tileSize;
+		gp.obj[i].worldY = 7 * gp.tileSize;
 		
 	}
 	public void setNPC() {

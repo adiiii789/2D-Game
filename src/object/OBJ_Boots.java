@@ -12,6 +12,7 @@ public OBJ_Boots(GamePanel gp) {
 		
 		name = "Boots";
 		down1 = setup("/objects/boots",gp.tileSize,gp.tileSize);
+		description = "["+name+"]\n \"Now in 2.5D!\"";
 		
 		
 	}
