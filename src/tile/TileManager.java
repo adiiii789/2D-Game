@@ -44,6 +44,12 @@ public class TileManager {
 			
 
 	}
+	/**
+	 * Speichert die tile bilder in ein Array
+	 * @param index i = map
+	 * @param imageName filepath
+	 * @param collision collision
+	 */
 	public void setup(int index, String imageName, boolean collision) {
 		
 		UtilityTool uTool = new UtilityTool();
@@ -58,6 +64,13 @@ public class TileManager {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Auswerten der .txt datei
+	 * line.split: jede Zahl wird einzeln in ein Array gespeichert
+	 * String der Zahlen in array werden in Int convertiert
+	 * die Zahlen werden in dem Array in 2D angeordnet
+	 * @param filePath Tilemanager
+	 */
 	public void loadMap(String filePath) {
 		try {
 			InputStream is = getClass().getResourceAsStream(filePath); //Map ins Programm importieren
@@ -91,6 +104,10 @@ public class TileManager {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Zeichnet nur die Map neu wenn der Spieler sich nicht am Rand befindet
+	 * @param g2 Graphics2D creats images
+	 */
 	public void draw(Graphics2D g2) {
 		
 		int worldCol = 0;

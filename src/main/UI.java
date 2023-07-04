@@ -68,6 +68,11 @@ public class UI {
 		message.add(text);
 		messageCounter.add(0);
 	}
+	/**
+	 * Zeichnet den Titlescreen und die HUD des Spielers
+	 * Zeichnet die HUD abhängig von Gamestate
+	 * @param g2
+	 */
 	public void draw(Graphics2D g2) { 
 		this.g2 = g2;
 		
@@ -162,6 +167,10 @@ public class UI {
 //			}
 //		}
 	}
+	/**
+	 * HUD hauptsächlich für playstate
+	 * Zeichnet Lebensleiste und Mana
+	 */
 	public void drawPlayerLife() {
 		
 //		gp.player.life = 5;
@@ -212,6 +221,10 @@ public class UI {
 		 
 		
 	}
+	/**
+	 * Nachrichten werden Angezeigt und gestapelt
+	 * soll chat simulieren
+	 */
 	public void drawMessage() {
 		int messageX = gp.tileSize;
 		int messageY = gp.tileSize*4;
@@ -239,6 +252,10 @@ public class UI {
 			}
 		}
 	}
+	/**
+	 * Zeichnet in den Titlescreen den Text und den Playersprite vergrößert Zentriert
+	 * 
+	 */
 	public void drawTitleScreen() {
 		
 	
@@ -302,6 +319,9 @@ public class UI {
 		
 		
 	}
+	/**
+	 * Zentriert Pause
+	 */
 	public void drawPauseScreen() {
 		
 		g2.setFont(this.arial_R_80B);
@@ -322,6 +342,10 @@ public class UI {
 		
 		
 	}
+	/**
+	 * Arrangiert die Dialogfenster
+	 * \n wird erfasst, da der sonst \n gezeichnet werden würde
+	 */
 	public void drawDialogueScreen() {
 		
 		int x = gp.tileSize*2;
@@ -342,6 +366,10 @@ public class UI {
 		}
 		
 	}
+	/**
+	 * Im Characterstate werden alle Statuswerte festgehalten, welche sich ändern müssen
+	 * Zeichnet momentane Objekte für Angriff und Verteidung
+	 */
 	public void drawCharacterScreen() {
 		
 		final int frameX = gp.tileSize;
@@ -433,6 +461,12 @@ public class UI {
 		g2.drawImage(gp.player.currentShield.down1,tailX-gp.tileSize+15,textY+7,null);
 		
 	}
+	/** 
+	 * Zeichnet weiteres Rechteck, welches durch Keylistener bewegt wird, dient als Cursor
+	 * Alle Objekte, welche in der Arraylist Entity festgehalten werden sollen Abgebildet werden
+	 * Schild und Schwert sollen auswählbar sein
+	 * 
+	 */
 	public void drawInventory() {
 		int frameX =gp.tileSize*9;
 		int frameY =gp.tileSize;
@@ -502,7 +536,15 @@ public class UI {
 	public int getItemIndexOnSlot() {
 		int itemIndex = slotCol + (slotRow*5);
 		return itemIndex;
-	}
+	} 
+	/**
+	 * Zeichnet ein ausgefülltes, halb transparentes Rechteck mit einem weißen Rand
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
 	public void drawSubWindow(int x, int y, int width, int height) {
 		
 		Color c = new Color(0,0,0,180); // (R,G,B,Deckkraft)
@@ -514,13 +556,19 @@ public class UI {
 		g2.setStroke(new BasicStroke(5));
 		g2.drawRoundRect(x+5,y+5,width-10, height-10, 25,25);
 	}
-	
+	/**
+	 * screenwidth/2 ist die mitte des screens
+	 * wovon die hälfte der länge des Textes abgezogen wird
+	 * @param text
+	 * @return
+	 */
 	public int getXforCenteredText(String text) {
 		int length = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
 		int x =  gp.screenWidth/2 - length/2;
 		return x;
 		
 	}
+	
 	public int getXforAlighToRightText(String text, int tailX) {
 		int length = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
 		int x =  tailX - length;

@@ -12,7 +12,11 @@ public class EventHandler {
 	
 	int previousEventX, previousEventY;
 	boolean canTouchEvent = true;
-	
+	/**
+	 * Events werden auf bestimmten tiles getriggered
+	 * dieses Erstellt eine Kollision
+	 * @param gp
+	 */
 	public EventHandler(GamePanel gp) {
 		this.gp = gp;
 		
@@ -37,6 +41,11 @@ public class EventHandler {
 		}
 		}	
 	}
+	/**
+	 * Math.abs ist die distanz, da es absolute positive werte wiedergibt
+	 * Distanz zu event wird erfasst, damit dieses nicht mehrfach getriggered wird
+	 * Setzt die Events an Bestimmte Positionen in der Karte
+	 */
 	public void checkEvent() {
 		
 		int xDistance = Math.abs(gp.player.worldX - previousEventX); //gibt absolute werte wieder, also werden negative werte trotzdem Positiv angezeigt, Distanz berechnen
@@ -58,6 +67,14 @@ public class EventHandler {
 			teleport(4,1,gp.dialogueState);
 		}
 	}
+	/**
+	 * Collision mit Event
+	 * 
+	 * @param col
+	 * @param row
+	 * @param reqDirection
+	 * @return
+	 */
 	public boolean hit(int col, int row, String reqDirection) {
 		boolean hit = false;
 				
@@ -82,6 +99,12 @@ public class EventHandler {
 		
 				return hit;
 	}
+	/**
+	 * beeinflusst das Leben des Spielers bei Kontakt und gibt ein Dialog wieder
+	 * @param col
+	 * @param row
+	 * @param gameState
+	 */
 	public void damagePit(int col, int row, int gameState) {
 		gp.gameState = gameState;
 		gp.ui.currentDialogue = "You fall into a pit!";
@@ -102,6 +125,12 @@ public class EventHandler {
 		}
 		
 	}
+	/**
+	 * Änder die Position des Spielers bei Kontakt und gibt ein Dialog wieder
+	 * @param col
+	 * @param row
+	 * @param gameState
+	 */
 	public void teleport (int col, int row, int gameState) {
 		gp.gameState = gameState;
 		gp.ui.currentDialogue = "Where am I?";

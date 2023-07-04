@@ -14,6 +14,13 @@ import entity.Entity;
 import entity.Player;
 import tile.TileManager;
 
+/**
+ * Arraylist speichert Objekte für späteren abruf
+ * Entity Object, NPC und Monster werden als EntityArray erstellt
+ * 
+ * @author adibl
+ *
+ */
 public class GamePanel extends JPanel implements Runnable{
 	//this heißt btw diese klasse, also GamePanel
 	
@@ -63,16 +70,27 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	
 	
-	
+	/**
+	 * Ergänzung der Main methode
+	 * setDoubleBuffered zeichnet das Bild im Hintergrund und zeigt dieses bei vervollständigung an.
+	 * wenn nichts gezeichnet wird, soll der Hintergrund Schwarz sein
+	 * addKeylistener soll das Abfragen von Inputs über das Fenster ermöglichen
+	 * setFocusable bedeutet das er speziell key inputs abfrägt
+	 * 
+	 */
 	public GamePanel () {
 		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
-		this.setDoubleBuffered(true); 						//dies ist ein extra painting buffer, welcher im hintergrund arbeitet TODO Google
-		this.addKeyListener(keyH);							//Programm kann mit den implementierten inputs im Panel interagieren
+		this.setDoubleBuffered(true); 						//dies ist ein extra painting buffer, welcher im hintergrund arbeitet 
+		this.addKeyListener(keyH);						//Programm kann mit den implementierten inputs im Panel interagieren
 		this.setFocusable(true);							//Programm "fokussiert" sich auf key inputs
 	
 		
+	/**
+	 * Bei Start sollen bereits im Hintergrund die Enitiys platziert werden
+	 * gameState wird auf titleState gesetzt, wodurch bei Start ein Titlescreen angezeigt wird
+	 */
 	}
 	public void setupGame() {
 		
@@ -82,6 +100,11 @@ public class GamePanel extends JPanel implements Runnable{
 		gameState = titleState;
 	}
 	
+	/**
+	 * Thread greift bei Aktivierung auf Run methode über
+	 * gameThread erstellt ein branch, welcher in der Run methode Parallel abgearbeitet wird
+	 * 
+	 */
 	public void startGameThread() {
 		
 		gameThread = new Thread(this); 
@@ -89,6 +112,9 @@ public class GamePanel extends JPanel implements Runnable{
 	}	//			|___________________
 		//								|								
 	@Override	//						V
+	/**
+	 * run berechnet eine simple form von Deltatime, welche die Geschwindigkeit, in welcher Bilder generiert werden, reguliert
+	 */
 	public void run() { //sobald die  gameThread.start() aufgerufen wird, wird diese Methode getriggered
 		
 		//hier wird die Zeit definiert, also, wie der Char sich im Bild bewegt. das heißt die Logic muss sich aktualisieren und die Bilder müssen gezeichnet werden
@@ -136,6 +162,12 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 	}
+	/**
+	 * Stetige Abfrage über Zustand der NPCs, wenn sie von Player klasse als tot deklariert wird, werden diese ausgeblendet
+	 * update sorgt für die Logic des spiels
+	 * wenn GameState !playstate oder !bullethellState ist, kann die Logic nicht aktualisiert werden
+	 * 
+	 */
 	public void update() {  
 		if (gameState == playState || gameState == bullethellState) {
 			player.update(); // Player wird nur geupdated, wenn gameState auf playstate ist
@@ -167,10 +199,17 @@ public class GamePanel extends JPanel implements Runnable{
 				
 		}
 		if (gameState == pauseState) {
-			
+			//Maybe one Day...
 		}
 		
 	}
+	/**
+	 * Zeichnet bei Start den Titlescreen
+	 * Regelt Render Priorität, da sonst der Spieler über alles gerendert werden würde
+	 * Debug, welches Kordinaten anzeigt und die DrawIntervalle in nanosekunden
+	 * Graphics2D bibliothek Zeichnet alle Grafiken in diesem Programm
+	 * 
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g; //ermöglicht besseren zugriff auf verschiedene wichtige tools für 2D graphiken.

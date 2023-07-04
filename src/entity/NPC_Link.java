@@ -34,6 +34,9 @@ public class NPC_Link extends Entity{
 		dialogues[2] = "Take this!";
 		dialogues[3] = "Git Gud :D";
 	}
+	/**
+	 * Die """AI""", ähnlich wie die Monster macht sie zufällige bewegungen
+	 */
 	public void setAction() { //simple AI für den Charakter
 		
 		actionLockCounter++;

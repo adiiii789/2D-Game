@@ -44,6 +44,9 @@ public class MON_BlueSlime extends Entity{
 		right1 = setup("/monster/blueslime_down_1",gp.tileSize,gp.tileSize);
 		right2 = setup("/monster/blueslime_down_2",gp.tileSize,gp.tileSize);
 	}
+	/**
+	 * Monster Algorythmus ist Zufällig
+	 */
 	public void setAction() {
 
 		actionLockCounter++;
@@ -80,6 +83,10 @@ public class MON_BlueSlime extends Entity{
 			gp.projectileList.add(projectile);
 		}
 	}
+	/**
+	 * wenn das Monster Schaden erfährt, wird es in die richtung, in welcher der Spieler schaut, gelenkt
+	 * also weg vom spieler
+	 */
 	public void damageReaction() {//Extends Entity ig
 		actionLockCounter = 0;
 		direction = gp.player.direction; //bewegt sich weg vom Spieler

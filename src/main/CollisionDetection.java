@@ -8,8 +8,12 @@ public class CollisionDetection {
 	public CollisionDetection (GamePanel gp) {
 		this.gp = gp;
 		
-		
+	
 	}
+	/**
+	 * Erfasst Kollision abhängig von Bewegungsrichtung
+	 * Kollision ist für alle entitys übergreifend	
+	 */
 	public void checkTile(Entity entity) { //allgemeine Collision, nicht nur für den Player
 		
 		int entityLeftWorldX = entity.worldX + entity.solidArea.x;
@@ -60,7 +64,16 @@ public class CollisionDetection {
 			
 		}
 		
+		
 	}
+	/**
+	 * intersect prüft ob zwei Rectangles sich überschneiden
+	 * 
+	 * 
+	 * @param entity
+	 * @param player
+	 * @return
+	 */
 	public int checkObject (Entity entity, boolean player) {
 		
 		int index = 999;
@@ -133,6 +146,12 @@ public class CollisionDetection {
 		
 		return index;
 	}
+	/**
+	 * überprüft ob EntityCollision sich mit EntityCollision intersected
+	 * @param entity
+	 * @param target
+	 * @return
+	 */
 	public int checkEntity(Entity entity, Entity[] target) { //NPC collision
 int index = 999;
 		
@@ -202,6 +221,11 @@ int index = 999;
 		
 		return index;
 	}
+	/**
+	 * setzt solidArea für den Spieler
+	 * @param entity
+	 * @return
+	 */
 	public boolean checkPlayer(Entity entity) {
 		
 		boolean contactPlayer = false;

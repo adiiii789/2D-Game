@@ -19,6 +19,9 @@ public class Projectile extends Entity{
 		this.user = user;
 		this.life = this.maxLife; 
 	}
+	/**
+	 * bei bullethellstate wird jedes projektil Nördlisch geschossen
+	 */
 	public void update() {
 		
 		if (user == gp.player) {
@@ -78,6 +81,6 @@ public class Projectile extends Entity{
 		
 	}
 	public void subtractResource(Entity user) {
-	
+	//Osterei :D
 	}
 }

@@ -7,8 +7,12 @@ import javax.swing.JFrame;
 
 public class Main {
 /**
+ * Generiert ein Fenster
+ * Im Fenster wird die Klasse GamePanel hinzugefügt
+ * Toolkit mit URL wird benutzt um ein bild als Icon zu konfigurieren
  * 
- * @param args
+ * 
+ * @param a
  */
 	public static void main(String[] args) {
 		

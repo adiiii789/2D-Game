@@ -31,6 +31,10 @@ public class KeyHandler implements KeyListener {
 	}
 
 	@Override
+	/**
+	 * über den KeyCode werden alle Keystrokes Registriert
+	 * abhängig von Gamestate werden Andere Inputs verlangt
+	 */
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode(); //gibt einen integer wert wieder, welcher der Code des Keys ist
 		
@@ -71,7 +75,10 @@ public class KeyHandler implements KeyListener {
 	}
 		
 
-
+		/**
+		 * Steuert durch Keystrokes Spiel startem oder Verlassen
+		 * @param code
+		 */
 		public void titleState(int code) {
 			if (code == KeyEvent.VK_W) { //VK ist der Konstante integer wert von K, welcher durch getKeyCode ermittelt wird.
 				gp.ui.commandNum--;
@@ -100,7 +107,11 @@ public class KeyHandler implements KeyListener {
 			}
 		
 			
-		
+		/**
+		 * GameStates werden durch einzelne TastenSchläge hervorgerufen
+		 * 
+		 * @param code
+		 */
 		public void playState(int code) {
 			bullethell = false;
 			if (code == KeyEvent.VK_W) { //VK ist der Konstante integer wert von K, welcher durch getKeyCode ermittelt wird.
@@ -156,6 +167,11 @@ public class KeyHandler implements KeyListener {
 			
 		
 		}
+		/**
+		 * Dialoge werden durch Enter normal geschlossen, allerdings wird hier nochmal über eine weitere Variable 
+		 * der gamestate vor öffnen des dialogueState festgehalten
+		 * @param code
+		 */
 		public void dialogueState(int code) {
 			if(code == KeyEvent.VK_ENTER) {
 				if(this.bullethell == false) {
@@ -166,6 +182,10 @@ public class KeyHandler implements KeyListener {
 				}
 			}
 		}
+		/**
+		 * im characterState wird auch das Inventar aufgerufen, welches mit den Pfeiltasten gesteuert wird
+		 * @param code
+		 */
 		public void characterState(int code) {
 			if (code == KeyEvent.VK_C || code == KeyEvent.VK_ESCAPE) {
 				gp.gameState = gp.playState;
@@ -194,6 +214,10 @@ public class KeyHandler implements KeyListener {
 				gp.player.selectItem();
 			}
 		}
+		/**
+		 * Alternative zu playstate, in welchen die Controls wesentlich verändert werden
+		 * @param code
+		 */
 		private void bullethellState(int code) {
 			 bullethell = true;
 			if (code == KeyEvent.VK_UP) { 
@@ -228,8 +252,12 @@ public class KeyHandler implements KeyListener {
 
 
 	@Override
+	/**
+	 * gerade bei bewegung wichtig Release festzuhalten
+	 * 
+	 */
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 		int code =  e.getKeyCode();
 		

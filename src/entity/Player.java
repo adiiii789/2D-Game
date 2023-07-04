@@ -30,7 +30,12 @@ public class Player extends Entity {
 	public final int maxInventorySize = 20;
 	int manacounter = 0;
 	
-	
+	/**
+	 * Charakter wird dem Bildschirm Zentriert
+	 * Kollision wird Configuriert
+	 * @param gp
+	 * @param keyH
+	 */
 	public Player (GamePanel gp, KeyHandler keyH) {
 		
 		super(gp); //es ist da um einen komischen Fehler zu beheben
@@ -144,7 +149,14 @@ public class Player extends Entity {
 		}
 		
  	}
-
+	
+	/**
+	 * Zeichnet den Spieler und die Bewegung
+	 * Checkt collision mit weiteren Entitys
+	 * Generiert Projektil
+	 * Bei Gamestate wechsel werden SpielerGrafiken und das Projektil ausgetauscht
+	 * Mana wird abgezogen bei benutzung und nach gewisser Zeit wieder regeneriert
+	 */
 	public void update () { //60 mal die Sekunde Aufgerufen
 			if(attacking == true) {
 				attacking();
@@ -285,8 +297,12 @@ public class Player extends Entity {
 				}
 			
 			}
-				//Zusammenfassend ist playerSpeed die Anzahl an Pixeln, wie sich der Character auf dem Bildschirm bewegt. also 100 (X) + 4 (PlayerSpeed) = 104 (X)
+				//Zusammenfassend ist playerSpeed die Anzahl an Pixeln, wie sich der Character auf dem Bildschirm bewegt. also 100 (X) + 4 (PlayerSpeed) = 104 (X) pro 1/60s
 				
+	/**
+	 * Prüft ob attackhitbox Entity trifft
+	 * w
+	 */
 	public void attacking() {
 		spriteCounter++;
 		
@@ -324,6 +340,11 @@ public class Player extends Entity {
 			attacking = false;
 		}
 	}
+	/**
+	 * Abhängig von dem Inventar wird ein Objekt diesem Hinzugefügt
+	 * nach dem Hinzufügen wird dieses Item, welches aufgehoben wurde gelöscht
+	 * @param i
+	 */ 
 	public void pickUpObject(int i) {
 		
 		if(i != 999) {
@@ -382,6 +403,10 @@ public class Player extends Entity {
 //			}
 //			
 
+	/**
+	 * wenn die Hitboxen colliden, soll bei ENTER der dialog des jeweiligen NPC getriggered werden
+	 * @param i
+	 */
 	public void interactNPC(int i) {
 		if(gp.keyH.enterPressed == true) {
 		if(i != 999) {
@@ -393,6 +418,10 @@ public class Player extends Entity {
 			
 		}
 	}
+	/**
+	 * Schadensberechnung bei kollision
+	 * @param i
+	 */
 	public void contactMonster(int i) {
 		if(i != 999) {
 			
@@ -406,6 +435,11 @@ public class Player extends Entity {
 			}
 		}
 	}
+	/**
+	 * es wird über addMessage die Nachricht dem "Chat" hinzugefügt
+	 * @param i
+	 * @param attack
+	 */
 	public void damageMonster(int i, int attack) {
 		if (i != 999) {
 			 if(gp.monster[i].invincible == false) {
@@ -430,6 +464,9 @@ public class Player extends Entity {
 				 
 		}
 	}
+	/**
+	 * Funktion für getAttack und getDefense muss neu aufgerufen werden, um den Schaden neu zu berechnen
+	 */
 	public void checkLevelUp() {
 		if (exp >= nextLevelExp) {
 			level++;
@@ -445,6 +482,9 @@ public class Player extends Entity {
 			
 		}
 	}
+	/**
+	 * Spezifische Items können aufgerufen werden über selectedItem
+	 */
 	public void selectItem() {
 		int itemIndex = gp.ui.getItemIndexOnSlot();
 		
@@ -466,6 +506,10 @@ public class Player extends Entity {
 			}
 		}
 	}
+	/**
+	 * Zeichnet den Spieler mit AttackAnimationen, wenn ENTER im playState gedrückt wird
+	 * Spieler wird halbtransparent bei Collision mit Gegner
+	 */
 	public void draw (Graphics2D g2) {
 
 		//g2.setColor(Color.white);

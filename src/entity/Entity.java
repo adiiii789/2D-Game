@@ -79,12 +79,15 @@ public class Entity {
 	public final int type_shield = 5;
 	public final int type_consumable = 6;
 	
-	
+	//platzhalter
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
 	public void setAction() {} //kann von der Subklasse überschrieben werden
 	public void damageReaction() {}
+	/**
+	 * Managed das Anzeigen von dialogen, indem es den Index configuriert
+	 */
 	public void speak() {
 		if (dialogues[dialogueIndex] == null) {
 			dialogueIndex = 0;
@@ -108,6 +111,11 @@ public class Entity {
 		}
 		
 	}
+	/**
+	 * Collision wird für die Entitys überprüft, bei kontakt Speed = 0
+	 * Sprite animation wird durch abwechseln von int 1 und 2 simuliert
+	 * überprüft ob Entity immunityframes hat
+	 */
 	public void update() {
 		setAction(); //priorisiert die setAction von der Subclass
 		
@@ -171,6 +179,11 @@ public class Entity {
 				}
 		}
 		}
+	/**
+	 * Damage wir abhängig von attack und defense bestimmt
+	 * 
+	 * @param attack
+	 */
 	public void damagePlayer (int attack) {
 		
 		if(gp.player.invincible == false) {
@@ -186,7 +199,10 @@ public class Entity {
 	
 		
 		
-	
+	/**
+	 * System zum Erfassen von Kartenrändern, wodurch der Spieler bei erreichen von Rändern auf dem screen bewegt wird
+	 * @param g2
+	 */
 	 public void draw(Graphics2D g2) {
 		  
 		  BufferedImage image = null;
@@ -274,7 +290,10 @@ public class Entity {
 		  }
 	 }
 	 
-
+	 /**
+	  * Wenn Entity kein leben hat, flackert dieser auf (changeAlpha zwischen 0 und 1), bevor er verschwindet
+	  * @param g2
+	  */
 	 public void dyingAnimation(Graphics2D g2) {
 		if (type == 2) {
 		 dyingCounter++;
@@ -314,6 +333,13 @@ public class Entity {
 		 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
 		 }
 	 
+	 /**
+	  * Performance auslagerung, welche Images in BufferedImage speichert
+	  * @param imagePath
+	  * @param width
+	  * @param height
+	  * @return
+	  */
 	public BufferedImage setup(String imagePath, int width, int height) {
 		
 		UtilityTool uTool = new UtilityTool();

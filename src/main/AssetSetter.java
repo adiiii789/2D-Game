@@ -16,7 +16,9 @@ public class AssetSetter {
 		this.gp = gp;
 		
 	}
-	
+	/**
+	 * Platziert die Objekte im Fenster im Verhältnis der Map
+	 */
 	public void setObject() {
 		int i = 0;
 		
@@ -33,12 +35,18 @@ public class AssetSetter {
 		gp.obj[i].worldY = 7 * gp.tileSize;
 		
 	}
+	/**
+	 * Platziert die NPC im Fenster im Verhältnis der Map
+	 */
 	public void setNPC() {
 		
 		gp.npc[0] = new NPC_Link(gp);
 		gp.npc[0].worldX = gp.tileSize*8 - gp.tileSize/2;
 		gp.npc[0].worldY = gp.tileSize*2 - gp.tileSize/2;
 	}
+	/**
+	 * Platziert die Gegner im Fenster im Verhältnis der Map
+	 */
 	public void setMonster() {
 		gp.monster[0] = new MON_BlueSlime(gp);
 		gp.monster[0].worldX = gp.tileSize*23;
