@@ -14,6 +14,7 @@
 
 ## Implemented features
 - You can pick up the items laying in front of you, only the bomb and the shield work at the time
+- The NPC is interactible through the press of `ENTER`
 - To the left there are some test events, such as a damage trigger
 - If you go in the door (black tile left above you) you'll be teleported into a chamber, where slimes reside
-- Slimes can respawn if you go to the left bottom tile and press ENTER
+- Slimes can respawn if you go to the left bottom tile and press `ENTER`
